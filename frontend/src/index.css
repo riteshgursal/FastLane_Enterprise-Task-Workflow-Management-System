@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-bg: var(--fl-bg);
+  --color-side: var(--fl-side);
+  --color-surface: var(--fl-sf);
+  --color-surface-2: var(--fl-sf2);
+  --color-lane: var(--fl-lane);
+  --color-line: var(--fl-bd);
+  --color-line-strong: var(--fl-bd2);
+  --color-ink: var(--fl-tx);
+  --color-ink-2: var(--fl-tx2);
+  --color-muted: var(--fl-mu);
+  --color-accent: var(--fl-ac);
+  --color-accent-soft: var(--fl-ac-soft);
+  --color-cerulean: #007BA7;
+  --color-lane-blue: #1DA1D8;
+  --color-rose: var(--fl-rose);
+  --color-rose-btn: #D1105A;
+  --color-rose-neon: #FF2E7E;
+  --color-rose-soft: var(--fl-rose-soft);
+  --color-ok: var(--fl-ok);
+  --color-ok-btn: #087443;
+  --color-ok-soft: var(--fl-ok-soft);
+  --color-warn: var(--fl-warn);
+  --color-warn-soft: var(--fl-warn-soft);
+  --color-chip: var(--fl-chip);
+  --color-violet: var(--fl-violet);
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", Inter, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root {
+  color-scheme: light;
+  --fl-bg: #F3F5F8; --fl-side: #FFFFFF; --fl-sf: #FFFFFF; --fl-sf2: #F7F8FA; --fl-lane: #EDF0F4;
+  --fl-bd: #E3E6EB; --fl-bd2: #CDD2DA; --fl-tx: #0A0A0B; --fl-tx2: #3F4450; --fl-mu: #5F6573;
+  --fl-ac: #00729B; --fl-ac-soft: #E0F1F8; --fl-rose: #C8104F; --fl-rose-soft: #FDE7EF;
+  --fl-ok: #087443; --fl-ok-soft: #DDF5E8; --fl-warn: #8A5A00; --fl-warn-soft: #FFF3D6;
+  --fl-chip: #EDEFF2; --fl-violet: #6941C6;
+}
+
+.dark {
+  color-scheme: dark;
+  --fl-bg: #0A0A0B; --fl-side: #0F1012; --fl-sf: #16171A; --fl-sf2: #1C1E22; --fl-lane: #121316;
+  --fl-bd: #26282E; --fl-bd2: #363942; --fl-tx: #F4F5F7; --fl-tx2: #B4B8C2; --fl-mu: #8D929E;
+  --fl-ac: #4FB8E6; --fl-ac-soft: #0B2836; --fl-rose: #FF5C9D; --fl-rose-soft: #3A0E20;
+  --fl-ok: #4AD08A; --fl-ok-soft: #0E2C1D; --fl-warn: #F5B544; --fl-warn-soft: #2E230B;
+  --fl-chip: #22242A; --fl-violet: #A78BFA;
+}
+
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--fl-bg); color: var(--fl-tx); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+:focus-visible { outline: 2px solid #1DA1D8; outline-offset: 2px; }
+input, select, textarea, button { font: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

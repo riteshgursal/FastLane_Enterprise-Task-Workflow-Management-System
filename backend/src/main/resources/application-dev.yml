@@ -1,0 +1,11 @@
+flowlane:
+  cookies:
+    secure: false
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+logging:
+  level:
+    com.flowlane: DEBUG

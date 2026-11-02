@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flowlane</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: {{c.bg}}; color: {{c.tx}}; font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif; position: relative">
+
+<sc-if value="{{isLogin}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; min-height: 100vh">
+<section style="flex: 1 1 440px; background: #0A0A0B; color: #F4F5F7; padding: 52px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; gap: 48px">
+<div style="display: flex; align-items: center; gap: 12px">
+<svg width="40" height="40" viewBox="0 0 32 32" aria-hidden="true"><rect x="0.5" y="0.5" width="31" height="31" rx="9" fill="#0A0A0B" stroke="#2A2C33"></rect><rect x="8" y="7" width="4.5" height="18" rx="2.25" fill="#1DA1D8"></rect><rect x="8" y="7" width="16" height="4.5" rx="2.25" fill="#1DA1D8"></rect><rect x="8" y="14.5" width="9" height="4.5" rx="2.25" fill="#FF2E7E"></rect><circle cx="21.5" cy="16.75" r="2.25" fill="#FF2E7E"></circle></svg>
+<span style="font-family: Space Grotesk, Inter, sans-serif; font-weight: 700; font-size: 24px; letter-spacing: -0.02em">Flowlane</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 18px; max-width: 460px">
+<h1 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 44px; line-height: 1.08; font-weight: 700; letter-spacing: -0.03em">Every task,<br><span style="color: #1DA1D8">in its lane.</span></h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #B4B8C2">Workspaces, boards, calendars and approvals, with workflows your server actually enforces.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px" aria-hidden="true">
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 220px; height: 10px; border-radius: 5px; background: #1DA1D8"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #1DA1D8"></span></div>
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 150px; height: 10px; border-radius: 5px; background: #FF2E7E"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #FF2E7E"></span></div>
+<div style="display: flex; align-items: center; gap: 10px"><span style="width: 290px; height: 10px; border-radius: 5px; background: #2A2C33"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #2A2C33"></span></div>
+</div>
+</section>
+<section style="flex: 1 1 440px; display: flex; flex-direction: column; padding: 28px 32px 48px; box-sizing: border-box">
+<div style="display: flex; justify-content: flex-end">
+<button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; color: {{c.tx2}}; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{themeIcon}}"></path></svg></button>
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center">
+<div style="width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">{{loginTitle}}</h2>
+<p style="margin: 0; font-size: 14px; color: {{c.tx2}}">{{loginSub}}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px">
+<sc-if value="{{isSignup}}" hint-placeholder-val="{{ false }}">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; color: {{c.tx2}}">Full name<input type="text" placeholder="Riya Shah" style="min-height: 44px; padding: 0 14px; background: {{c.sf}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; color: {{c.tx}}"></label>
+</sc-if>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; color: {{c.tx2}}">Work email<input type="email" placeholder="name@company.com" style="min-height: 44px; padding: 0 14px; background: {{c.sf}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; color: {{c.tx}}"></label>
+<sc-if value="{{notReset}}" hint-placeholder-val="{{ true }}">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 500; color: {{c.tx2}}">Password<input type="password" placeholder="At least 12 characters" style="min-height: 44px; padding: 0 14px; background: {{c.sf}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; color: {{c.tx}}"></label>
+</sc-if>
+<sc-if value="{{isSignin}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{toReset}}" style="align-self: flex-end; background: none; border: 0; padding: 4px 0; font: inherit; font-size: 13px; font-weight: 600; color: {{c.ac}}; cursor: pointer">Forgot password?</button>
+</sc-if>
+</div>
+<button type="button" onClick="{{loginSubmit}}" style="min-height: 48px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">{{loginCta}}</button>
+<sc-if value="{{notReset}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: {{c.mu}}"><span style="flex: 1; height: 1px; background: {{c.bd}}"></span>or<span style="flex: 1; height: 1px; background: {{c.bd}}"></span></div>
+<button type="button" onClick="{{loginSubmit}}" style="min-height: 46px; background: {{c.sf}}; color: {{c.tx}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Continue with company SSO</button>
+</sc-if>
+<p style="margin: 0; font-size: 14px; color: {{c.tx2}}; text-align: center">{{loginSwitchText}} <button type="button" onClick="{{loginSwitch}}" style="background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: {{c.ac}}; cursor: pointer">{{loginSwitchCta}}</button></p>
+</div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isApp}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; flex-wrap: wrap; min-height: 100vh">
+
+<aside style="flex: 1 1 248px; background: {{c.side}}; border-right: 1px solid {{c.bd}}; padding: 18px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; align-items: center; gap: 10px; padding: 4px 8px 16px">
+<svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect x="0.5" y="0.5" width="31" height="31" rx="9" fill="#0A0A0B" stroke="{{c.logoStroke}}"></rect><rect x="8" y="7" width="4.5" height="18" rx="2.25" fill="#1DA1D8"></rect><rect x="8" y="7" width="16" height="4.5" rx="2.25" fill="#1DA1D8"></rect><rect x="8" y="14.5" width="9" height="4.5" rx="2.25" fill="#FF2E7E"></rect><circle cx="21.5" cy="16.75" r="2.25" fill="#FF2E7E"></circle></svg>
+<span style="font-family: Space Grotesk, Inter, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: -0.02em">Flowlane</span>
+</div>
+<div style="position: relative; margin-bottom: 14px">
+<button type="button" onClick="{{toggleWs}}" aria-expanded="{{wsOpen}}" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: 48px; padding: 6px 10px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="display: flex; align-items: center; gap: 10px"><span style="width: 28px; height: 28px; border-radius: 8px; background: {{c.acSoft}}; color: {{c.ac}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{wsInitial}}</span><span style="display: flex; flex-direction: column"><span style="font-size: 11px; color: {{c.mu}}">Workspace</span><span style="font-size: 14px; font-weight: 600">{{workspace}}</span></span></span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 10l5 5 5-5"></path></svg>
+</button>
+<sc-if value="{{wsOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 54px; left: 0; right: 0; z-index: 30; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 2px">
+<sc-for list="{{workspaces}}" as="w" hint-placeholder-count="2">
+<button type="button" onClick="{{w.pick}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; background: {{w.bg}}; border: 0; border-radius: 8px; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="width: 24px; height: 24px; border-radius: 6px; background: {{c.acSoft}}; color: {{c.ac}}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">{{w.initial}}</span><span style="flex: 1">{{w.name}}</span><span style="font-size: 12px; color: {{c.mu}}">{{w.meta}}</span></button>
+</sc-for>
+<button type="button" onClick="{{createWorkspace}}" style="min-height: 44px; padding: 0 10px; background: none; border: 0; border-top: 1px solid {{c.bd}}; font: inherit; font-size: 14px; font-weight: 600; color: {{c.ac}}; cursor: pointer; text-align: left">+ Create workspace</button>
+</div>
+</sc-if>
+</div>
+<sc-for list="{{nav}}" as="n" hint-placeholder-count="8">
+<button type="button" onClick="{{n.go}}" style="display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 10px; background: {{n.bg}}; border: 0; border-radius: 9px; font: inherit; font-size: 14px; font-weight: {{n.weight}}; color: {{n.fg}}; cursor: pointer; text-align: left">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.icon}}"></path></svg>
+<span style="flex: 1">{{n.label}}</span>
+<sc-if value="{{n.hasBadge}}" hint-placeholder-val="{{ false }}"><span style="min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px; background: {{n.badgeBg}}; color: {{n.badgeFg}}; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center">{{n.badge}}</span></sc-if>
+</button>
+</sc-for>
+<div style="display: flex; align-items: center; justify-content: space-between; padding: 18px 10px 6px"><span style="font-size: 12px; font-weight: 600; color: {{c.mu}}">Projects</span><button type="button" onClick="{{newProject}}" aria-label="New project" style="width: 28px; height: 28px; background: none; border: 0; border-radius: 6px; color: {{c.mu}}; font-size: 18px; cursor: pointer">+</button></div>
+<sc-for list="{{projNav}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.go}}" style="display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 10px; background: {{p.bg}}; border: 0; border-radius: 9px; font: inherit; font-size: 14px; font-weight: {{p.weight}}; color: {{p.fg}}; cursor: pointer; text-align: left"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{p.color}}"></span><span style="flex: 1">{{p.name}}</span><span style="font-family: JetBrains Mono, monospace; font-size: 11px; color: {{c.mu}}">{{p.key}}</span></button>
+</sc-for>
+<div style="margin-top: auto; padding-top: 16px; border-top: 1px solid {{c.bd}}; display: flex; align-items: center; gap: 8px">
+<button type="button" onClick="{{goSettings}}" style="flex: 1; display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 6px; background: none; border: 0; border-radius: 10px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="width: 34px; height: 34px; border-radius: 50%; background: {{c.acSoft}}; color: {{c.ac}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">RS</span>
+<span style="display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 600">Riya Shah</span><span style="font-size: 12px; color: {{c.mu}}">Owner</span></span>
+</button>
+<button type="button" onClick="{{logout}}" aria-label="Sign out" style="width: 40px; height: 40px; background: none; border: 1px solid {{c.bd}}; border-radius: 10px; color: {{c.tx2}}; cursor: pointer; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h4v16h-4M10 17l5-5-5-5M15 12H3"></path></svg></button>
+</div>
+</aside>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 22px 30px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 2px; margin-right: auto">
+<span style="font-size: 13px; color: {{c.mu}}">{{sub}}</span>
+<h1 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 28px; font-weight: 700; letter-spacing: -0.02em">{{title}}</h1>
+</div>
+<div style="position: relative; flex: 0 1 300px; min-width: 200px">
+<label style="display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; color: {{c.mu}}">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M17 11a6 6 0 1 1-12 0a6 6 0 1 1 12 0M20 20l-4-4"></path></svg>
+<span style="position: absolute; width: 1px; height: 1px; overflow: hidden">Search tasks</span>
+<input type="search" value="{{q}}" onChange="{{setQ}}" placeholder="Search tasks, keys, people" style="flex: 1; min-width: 0; border: 0; outline: none; background: transparent; font: inherit; font-size: 14px; color: {{c.tx}}">
+<span style="font-family: JetBrains Mono, monospace; font-size: 11px; color: {{c.mu}}; border: 1px solid {{c.bd}}; border-radius: 5px; padding: 1px 5px">/</span>
+</label>
+<sc-if value="{{hasQuery}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; top: 50px; left: 0; right: 0; z-index: 40; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; padding: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.25); display: flex; flex-direction: column">
+<sc-for list="{{results}}" as="r" hint-placeholder-count="3">
+<button type="button" onClick="{{r.open}}" style="display: flex; align-items: center; gap: 10px; min-height: 42px; padding: 0 10px; background: none; border: 0; border-radius: 8px; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}; width: 56px">{{r.key}}</span><span style="flex: 1">{{r.title}}</span><span style="width: 8px; height: 8px; border-radius: 50%; background: {{r.statusDot}}"></span></button>
+</sc-for>
+<sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 12px; font-size: 14px; color: {{c.mu}}">No tasks match “{{q}}”.</p></sc-if>
+</div>
+</sc-if>
+</div>
+<button type="button" onClick="{{toggleTheme}}" aria-label="{{themeLabel}}" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; color: {{c.tx2}}; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{themeIcon}}"></path></svg></button>
+<button type="button" onClick="{{goNotifs}}" aria-label="Notifications" style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 12px; color: {{c.tx2}}; cursor: pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0"></path></svg><sc-if value="{{hasUnread}}" hint-placeholder-val="{{ true }}"><span style="position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: {{c.roseBtn}}; border: 2px solid {{c.sf}}"></span></sc-if></button>
+<button type="button" onClick="{{openNewTask}}" style="min-height: 44px; padding: 0 18px; background: {{c.roseBtn}}; color: #FFFFFF; border: 0; border-radius: 12px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">+ New task</button>
+</div>
+
+<sc-if value="{{isDash}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
+<sc-for list="{{metrics}}" as="m" hint-placeholder-count="4">
+<button type="button" onClick="{{m.go}}" style="display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; background: {{c.sf}}; border: 1px solid {{m.border}}; border-radius: 14px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="font-size: 13px; color: {{c.tx2}}">{{m.label}}</span><span style="font-family: Space Grotesk, Inter, sans-serif; font-size: 34px; font-weight: 700; color: {{m.color}}">{{m.value}}</span><span style="font-size: 12px; color: {{m.noteColor}}">{{m.note}}</span></button>
+</sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Project progress</h2>
+<sc-for list="{{projStats}}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{p.go}}" style="display: flex; flex-direction: column; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="display: flex; justify-content: space-between; width: 100%; font-size: 14px"><span>{{p.name}} <span style="font-family: JetBrains Mono, monospace; font-size: 11px; color: {{c.mu}}">{{p.key}}</span></span><span style="font-weight: 600">{{p.pctLabel}}</span></span>
+<span style="display: block; width: 100%; height: 8px; border-radius: 4px; background: {{c.chip}}"><span style="display: block; width: {{p.pctLabel}}; height: 8px; border-radius: 4px; background: {{p.color}}"></span></span>
+</button>
+</sc-for>
+<div style="border-top: 1px solid {{c.bd}}; padding-top: 14px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-size: 13px; font-weight: 600; color: {{c.tx2}}">Tasks by status category</span>
+<div style="display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: {{c.chip}}"><sc-for list="{{catBar}}" as="b" hint-placeholder-count="4"><span style="width: {{b.w}}; background: {{b.color}}"></span></sc-for></div>
+<div style="display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: {{c.tx2}}"><sc-for list="{{catBar}}" as="b" hint-placeholder-count="4"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 2px; background: {{b.color}}"></span>{{b.label}} {{b.count}}</span></sc-for></div>
+</div>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px"><h2 style="margin: 0; font-size: 16px; font-weight: 600">My upcoming deadlines</h2><button type="button" onClick="{{goMyTasks}}" style="background: none; border: 0; font: inherit; font-size: 13px; font-weight: 600; color: {{c.ac}}; cursor: pointer">View all</button></div>
+<sc-for list="{{upcoming}}" as="t" hint-placeholder-count="5">
+<button type="button" onClick="{{t.open}}" style="display: flex; align-items: center; gap: 12px; min-height: 46px; background: none; border: 0; border-bottom: 1px solid {{c.bd}}; padding: 0; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}; width: 56px">{{t.key}}</span><span style="flex: 1; font-size: 14px">{{t.title}}</span><span style="font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: {{t.dueBg}}; color: {{t.dueFg}}">{{t.dueLabel}}</span></button>
+</sc-for>
+</section>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 2px">
+<h2 style="margin: 0 0 8px; font-size: 16px; font-weight: 600">Recent activity</h2>
+<sc-for list="{{activity}}" as="a" hint-placeholder-count="4">
+<div style="display: flex; align-items: center; gap: 12px; min-height: 46px; border-bottom: 1px solid {{c.bd}}; font-size: 14px"><span style="width: 28px; height: 28px; flex: none; border-radius: 50%; background: {{a.avBg}}; color: {{a.avFg}}; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">{{a.who}}</span><span style="flex: 1; color: {{c.tx2}}"><b style="font-weight: 600; color: {{c.tx}}">{{a.name}}</b> {{a.text}}</span><span style="font-size: 12px; color: {{c.mu}}">{{a.when}}</span></div>
+</sc-for>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Waiting for your approval</h2>
+<sc-for list="{{pendingList}}" as="t" hint-placeholder-count="1">
+<button type="button" onClick="{{t.open}}" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: {{c.warnSoft}}; border: 0; border-radius: 10px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.warn}}">{{t.key}}</span><span style="flex: 1; font-size: 14px">{{t.title}}</span><span style="font-size: 12px; font-weight: 600; color: {{c.warn}}">In review → Done</span></button>
+</sc-for>
+<sc-if value="{{noPending}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: {{c.mu}}">Nothing waiting. Approvals you need to give show up here.</p></sc-if>
+<div style="border-top: 1px solid {{c.bd}}; padding-top: 12px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 13px; font-weight: 600; color: {{c.tx2}}">Upcoming milestones</span>
+<button type="button" onClick="{{goCalendar}}" style="display: flex; justify-content: space-between; min-height: 36px; align-items: center; background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer"><span>◆ Mobile beta</span><span style="color: {{c.mu}}">Nov 15</span></button>
+<button type="button" onClick="{{goCalendar}}" style="display: flex; justify-content: space-between; min-height: 36px; align-items: center; background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer"><span>◆ Website go-live</span><span style="color: {{c.mu}}">Nov 30</span></button>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isBoard}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid {{c.bd}}">
+<div role="tablist" style="display: flex; gap: 4px; padding: 4px; background: {{c.chip}}; border-radius: 10px">
+<sc-for list="{{views}}" as="v" hint-placeholder-count="3"><button type="button" role="tab" aria-selected="{{v.on}}" onClick="{{v.pick}}" style="min-height: 34px; padding: 0 14px; background: {{v.bg}}; border: 0; border-radius: 7px; font: inherit; font-size: 14px; font-weight: 600; color: {{v.fg}}; cursor: pointer">{{v.label}}</button></sc-for>
+</div>
+<sc-for list="{{prioFilters}}" as="f" hint-placeholder-count="5"><button type="button" aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="min-height: 34px; padding: 0 12px; background: {{f.bg}}; border: 1px solid {{f.border}}; border-radius: 17px; font: inherit; font-size: 13px; color: {{f.fg}}; cursor: pointer">{{f.label}}</button></sc-for>
+<span style="margin-left: auto; display: flex; gap: 8px">
+<button type="button" onClick="{{goMembers}}" style="min-height: 38px; padding: 0 12px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Members</button>
+<button type="button" onClick="{{goWorkflow}}" style="min-height: 38px; padding: 0 12px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Workflow settings</button>
+</span>
+</div>
+<sc-if value="{{boardIsBoard}}" hint-placeholder-val="{{ true }}">
+<div style="overflow-x: auto; padding-bottom: 6px">
+<div style="display: grid; grid-template-columns: repeat(4, minmax(230px, 1fr)); gap: 14px; min-width: 960px">
+<sc-for list="{{columns}}" as="col" hint-placeholder-count="4">
+<section style="background: {{c.lane}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 560px">
+<div style="display: flex; align-items: center; gap: 8px; padding: 2px 4px">
+<span style="width: 9px; height: 9px; border-radius: 50%; background: {{col.dot}}"></span>
+<h2 style="margin: 0; font-size: 14px; font-weight: 600">{{col.name}}</h2>
+<span style="font-size: 12px; color: {{c.mu}}">{{col.count}}</span>
+<span style="margin-left: auto; font-family: JetBrains Mono, monospace; font-size: 10px; color: {{c.tx2}}; background: {{c.chip}}; border-radius: 4px; padding: 2px 6px">{{col.category}}</span>
+</div>
+<sc-for list="{{col.cards}}" as="t" hint-placeholder-count="2">
+<button type="button" onClick="{{t.open}}" style="display: flex; flex-direction: column; gap: 10px; padding: 12px; background: {{c.sf}}; border: 1px solid {{t.cardBorder}}; border-radius: 12px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="display: flex; align-items: center; justify-content: space-between; width: 100%"><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}">{{t.key}}</span><span style="font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{t.pBg}}; color: {{t.pFg}}">{{t.priority}}</span></span>
+<span style="font-size: 14px; font-weight: 600; line-height: 1.4">{{t.title}}</span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{t.tags}}" as="g" hint-placeholder-count="1"><span style="font-size: 11px; color: {{c.tx2}}; background: {{c.chip}}; border-radius: 4px; padding: 2px 6px">{{g}}</span></sc-for></span>
+<span style="display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: 12px"><span style="color: {{t.dueFg2}}; font-weight: {{t.dueWeight}}">{{t.dueLabel}}</span><span style="display: flex; align-items: center; gap: 8px; color: {{c.mu}}">{{t.meta}}<span style="width: 24px; height: 24px; border-radius: 50%; background: {{t.avBg}}; color: {{t.avFg}}; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700">{{t.who}}</span></span></span>
+</button>
+</sc-for>
+<button type="button" onClick="{{openNewTask}}" style="min-height: 40px; background: none; border: 1px dashed {{c.bd2}}; border-radius: 10px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">+ Add task</button>
+</section>
+</sc-for>
+</div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{showTable}}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 14px; background: {{c.acSoft}}; border-radius: 12px; font-size: 14px">
+<b style="font-weight: 600; color: {{c.ac}}">{{selCount}} selected</b>
+<button type="button" onClick="{{bulkAssign}}" style="min-height: 36px; padding: 0 12px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.tx}}; cursor: pointer">Assign to me</button>
+<button type="button" onClick="{{bulkPriority}}" style="min-height: 36px; padding: 0 12px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.tx}}; cursor: pointer">Set priority: High</button>
+<button type="button" onClick="{{bulkClear}}" style="margin-left: auto; min-height: 36px; padding: 0 12px; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 600; color: {{c.ac}}; cursor: pointer">Clear selection</button>
+</div>
+</sc-if>
+<div style="overflow-x: auto; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px">
+<table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 14px">
+<thead><tr style="text-align: left; color: {{c.mu}}; font-size: 12px">
+<th scope="col" style="padding: 12px 14px; width: 28px; border-bottom: 1px solid {{c.bd}}"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden">Select</span></th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Key</th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Task</th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Project</th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Status</th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Priority</th>
+<th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Assignee</th>
+<th scope="col" style="padding: 12px 14px 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Due</th>
+</tr></thead>
+<tbody>
+<sc-for list="{{tableRows}}" as="t" hint-placeholder-count="6">
+<tr style="background: {{t.rowBg}}">
+<td style="padding: 10px 14px; border-bottom: 1px solid {{c.bd}}"><input type="checkbox" checked="{{t.selOn}}" onChange="{{t.toggleSel}}" aria-label="{{t.selLabel}}" style="width: 16px; height: 16px; accent-color: #007BA7"></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}; font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}">{{t.key}}</td>
+<td style="padding: 6px 8px; border-bottom: 1px solid {{c.bd}}"><button type="button" onClick="{{t.open}}" style="min-height: 36px; background: none; border: 0; padding: 0; font: inherit; font-weight: 500; color: {{c.tx}}; cursor: pointer; text-align: left">{{t.title}}</button></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}; color: {{c.tx2}}"><span style="display: inline-flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; border-radius: 2px; background: {{t.projColor}}"></span>{{t.projName}}</span></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}"><span style="display: inline-flex; align-items: center; gap: 6px; color: {{c.tx2}}"><span style="width: 8px; height: 8px; border-radius: 50%; background: {{t.statusDot}}"></span>{{t.status}}</span></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}"><span style="font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{t.pBg}}; color: {{t.pFg}}">{{t.priority}}</span></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}; color: {{c.tx2}}">{{t.whoName}}</td>
+<td style="padding: 10px 14px 10px 8px; border-bottom: 1px solid {{c.bd}}; color: {{t.dueFg2}}; font-weight: {{t.dueWeight}}">{{t.dueLabel}}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+<sc-if value="{{tableEmpty}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 28px; text-align: center; font-size: 14px; color: {{c.mu}}">No tasks match this filter.</p></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{isTask}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+<div style="flex: 999 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+<button type="button" onClick="{{task.openProject}}" style="display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 10px; background: {{c.chip}}; border: 0; border-radius: 8px; font: inherit; font-size: 12px; color: {{c.tx2}}; cursor: pointer"><span style="width: 8px; height: 8px; border-radius: 2px; background: {{task.projColor}}"></span>{{task.projName}}</button>
+<span style="font-family: JetBrains Mono, monospace; font-size: 13px; color: {{c.mu}}">{{task.key}}</span>
+<span style="font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{task.pBg}}; color: {{task.pFg}}">{{task.priority}}</span>
+<sc-if value="{{task.isRecurring}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: {{c.acSoft}}; color: {{c.ac}}">↻ {{task.recurring}}</span></sc-if>
+</div>
+<h2 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.02em">{{task.title}}</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.65; color: {{c.tx2}}">{{task.desc}}</p>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0"><h3 style="margin: 0; font-size: 15px; font-weight: 600">Subtasks</h3><span style="font-size: 13px; color: {{c.mu}}">{{task.subDone}}</span></div>
+<sc-for list="{{subtasks}}" as="s" hint-placeholder-count="3">
+<label style="display: flex; align-items: center; gap: 10px; min-height: 42px; border-top: 1px solid {{c.bd}}; font-size: 14px; color: {{s.fg}}"><input type="checkbox" checked="{{s.done}}" onChange="{{s.toggle}}" style="width: 16px; height: 16px; accent-color: #007BA7"><span style="flex: 1; text-decoration: {{s.deco}}">{{s.title}}</span><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}">{{s.key}}</span></label>
+</sc-for>
+</div>
+</section>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 600">Attachments</h3>
+<sc-for list="{{attachments}}" as="f" hint-placeholder-count="2">
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px"><span style="width: 34px; height: 34px; border-radius: 8px; background: {{f.bg}}; color: {{f.fg}}; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700">{{f.ext}}</span><span style="flex: 1; display: flex; flex-direction: column; min-width: 0"><span style="font-size: 14px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{f.name}}</span><span style="font-size: 12px; color: {{c.mu}}">{{f.size}} · {{f.by}}</span></span></div>
+</sc-for>
+<button type="button" onClick="{{uploadFile}}" style="min-height: 64px; background: none; border: 1.5px dashed {{c.bd2}}; border-radius: 10px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">Drop files or <b style="color: {{c.ac}}">browse</b> · up to 25 MB</button>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 600">Dependencies</h3>
+<sc-for list="{{deps}}" as="d" hint-placeholder-count="2">
+<button type="button" onClick="{{d.open}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="font-size: 12px; font-weight: 600; color: {{d.relFg}}; width: 76px">{{d.rel}}</span><span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}">{{d.key}}</span><span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{d.title}}</span><span style="width: 8px; height: 8px; border-radius: 50%; background: {{d.dot}}"></span></button>
+</sc-for>
+<sc-if value="{{noDeps}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: {{c.mu}}">No dependencies. Link a task that blocks or is blocked by this one.</p></sc-if>
+<button type="button" onClick="{{addDep}}" style="align-self: flex-start; min-height: 36px; padding: 0 12px; background: none; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">+ Link task</button>
+</section>
+</div>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 8px 22px 22px; display: flex; flex-direction: column; gap: 14px">
+<div role="tablist" style="display: flex; gap: 22px; border-bottom: 1px solid {{c.bd}}">
+<sc-for list="{{detailTabs}}" as="d" hint-placeholder-count="2"><button type="button" role="tab" aria-selected="{{d.on}}" onClick="{{d.pick}}" style="min-height: 46px; padding: 0 2px; background: none; border: 0; border-bottom: 2px solid {{d.border}}; font: inherit; font-size: 14px; font-weight: 600; color: {{d.fg}}; cursor: pointer">{{d.label}}</button></sc-for>
+</div>
+<sc-if value="{{tabComments}}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{comments}}" as="m" hint-placeholder-count="2">
+<div style="display: flex; gap: 12px"><span style="width: 32px; height: 32px; flex: none; border-radius: 50%; background: {{m.avBg}}; color: {{m.avFg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{m.who}}</span><div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 14px"><b style="font-weight: 600">{{m.name}}</b> <span style="font-size: 12px; color: {{c.mu}}">{{m.when}}</span></span><p style="margin: 0; font-size: 14px; line-height: 1.6; color: {{c.tx2}}">{{m.text}}</p></div></div>
+</sc-for>
+<label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Add a comment
+<textarea rows="3" value="{{commentDraft}}" onChange="{{setComment}}" placeholder="Write a comment. Type @ to mention someone." style="padding: 10px 12px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; font-size: 14px; color: {{c.tx}}; resize: vertical"></textarea>
+</label>
+<div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 12px; color: {{c.mu}}">Mentioned people get an in-app and email notification.</span><button type="button" onClick="{{postComment}}" style="margin-left: auto; min-height: 40px; padding: 0 16px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Comment</button></div>
+</sc-if>
+<sc-if value="{{tabHistory}}" hint-placeholder-val="{{ false }}">
+<ol style="margin: 0; padding: 0; list-style: none">
+<sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+<li style="display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid {{c.bd}}; font-size: 14px"><span style="width: 8px; height: 8px; margin-top: 6px; flex: none; border-radius: 50%; background: {{c.ac}}"></span><span style="flex: 1; color: {{c.tx2}}"><b style="font-weight: 600; color: {{c.tx}}">{{h.who}}</b> {{h.text}}</span><span style="font-size: 12px; color: {{c.mu}}">{{h.when}}</span></li>
+</sc-for>
+</ol>
+</sc-if>
+</section>
+</div>
+<aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 13px; color: {{c.tx2}}">Status</span><span style="font-family: JetBrains Mono, monospace; font-size: 10px; color: {{c.tx2}}; background: {{c.chip}}; border-radius: 4px; padding: 2px 6px">{{task.category}}</span></div>
+<div style="display: flex; align-items: center; gap: 10px; font-family: Space Grotesk, Inter, sans-serif; font-size: 20px; font-weight: 700"><span style="width: 11px; height: 11px; border-radius: 50%; background: {{task.statusDot}}"></span>{{task.status}}</div>
+<sc-if value="{{task.pending}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px; padding: 12px; background: {{c.warnSoft}}; border-radius: 10px">
+<span style="font-size: 13px; line-height: 1.5; color: {{c.warn}}"><b>Approval pending.</b> Moving to Done needs a project manager. You’re a manager on this project.</span>
+<div style="display: flex; gap: 8px"><button type="button" onClick="{{approve}}" style="flex: 1; min-height: 40px; background: {{c.okBtn}}; color: #FFFFFF; border: 0; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Approve</button><button type="button" onClick="{{reject}}" style="flex: 1; min-height: 40px; background: {{c.sf}}; color: {{c.tx}}; border: 1px solid {{c.bd2}}; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer">Send back</button></div>
+</div>
+</sc-if>
+<sc-if value="{{task.canMove}}" hint-placeholder-val="{{ true }}">
+<span style="font-size: 12px; color: {{c.mu}}">Move to · only allowed transitions</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{moves}}" as="m" hint-placeholder-count="2"><button type="button" onClick="{{m.go}}" style="min-height: 40px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 8px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">{{m.label}}</button></sc-for></div>
+</sc-if>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 6px 20px 10px">
+<sc-for list="{{fields}}" as="f" hint-placeholder-count="7">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; border-bottom: 1px solid {{c.bd}}; font-size: 14px"><span style="color: {{c.tx2}}">{{f.label}}</span><span style="color: {{f.fg}}; font-weight: {{f.weight}}; text-align: right">{{f.value}}</span></div>
+</sc-for>
+<label style="display: flex; align-items: center; justify-content: space-between; min-height: 48px; font-size: 14px; color: {{c.tx2}}">Email me updates on this task<input type="checkbox" checked="{{watching}}" onChange="{{toggleWatch}}" style="width: 18px; height: 18px; accent-color: #007BA7"></label>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{isCal}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<button type="button" onClick="{{calPrev}}" aria-label="Previous month" style="width: 40px; height: 40px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; color: {{c.tx}}; cursor: pointer">‹</button>
+<span style="font-family: Space Grotesk, Inter, sans-serif; font-size: 18px; font-weight: 700; min-width: 140px; text-align: center">November 2026</span>
+<button type="button" onClick="{{calPrev}}" aria-label="Next month" style="width: 40px; height: 40px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; color: {{c.tx}}; cursor: pointer">›</button>
+<div role="tablist" style="display: flex; gap: 4px; padding: 4px; background: {{c.chip}}; border-radius: 10px"><sc-for list="{{calModes}}" as="v" hint-placeholder-count="2"><button type="button" role="tab" aria-selected="{{v.on}}" onClick="{{v.pick}}" style="min-height: 32px; padding: 0 12px; background: {{v.bg}}; border: 0; border-radius: 7px; font: inherit; font-size: 13px; font-weight: 600; color: {{v.fg}}; cursor: pointer">{{v.label}}</button></sc-for></div>
+<span style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: {{c.tx2}}">
+<sc-for list="{{projLegend}}" as="p" hint-placeholder-count="3"><span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{p.color}}"></span>{{p.name}}</span></sc-for>
+<span style="display: flex; align-items: center; gap: 6px"><span style="color: {{c.rose}}">◆</span>Milestone</span>
+</span>
+</div>
+<div style="overflow-x: auto; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px">
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); min-width: 840px">
+<sc-for list="{{weekdays}}" as="d" hint-placeholder-count="7"><div style="padding: 10px 12px; font-size: 12px; font-weight: 600; color: {{c.mu}}; border-bottom: 1px solid {{c.bd}}">{{d}}</div></sc-for>
+<sc-for list="{{calCells}}" as="cell" hint-placeholder-count="35">
+<div style="min-height: {{calCellH}}; padding: 8px; border-bottom: 1px solid {{c.bd}}; border-right: 1px solid {{c.bd}}; background: {{cell.bg}}; display: flex; flex-direction: column; gap: 5px; box-sizing: border-box">
+<span style="display: flex; align-items: center; justify-content: space-between"><span style="width: 26px; height: 26px; border-radius: 50%; background: {{cell.numBg}}; color: {{cell.numFg}}; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center">{{cell.day}}</span><sc-if value="{{cell.hasMilestone}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 600; color: {{c.rose}}">◆ {{cell.milestone}}</span></sc-if></span>
+<sc-for list="{{cell.items}}" as="t" hint-placeholder-count="1">
+<button type="button" onClick="{{t.open}}" style="display: flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 6px; background: {{t.chipBg}}; border: 0; border-left: 3px solid {{t.projColor}}; border-radius: 0; font: inherit; font-size: 11px; color: {{c.tx}}; cursor: pointer; text-align: left; overflow: hidden"><span style="font-family: JetBrains Mono, monospace; color: {{t.chipKey}}">{{t.key}}</span><span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{t.calTitle}}</span></button>
+</sc-for>
+<sc-if value="{{cell.hasMore}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; color: {{c.mu}}">+{{cell.more}} more</span></sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0 0 4px; font-size: 15px; font-weight: 600">Recurring tasks</h2>
+<button type="button" onClick="{{openRecurring}}" style="display: flex; justify-content: space-between; align-items: center; min-height: 40px; background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: {{c.tx}}; cursor: pointer"><span>↻ Weekly status report <span style="font-family: JetBrains Mono, monospace; font-size: 12px; color: {{c.mu}}">WEB-20</span></span><span style="color: {{c.mu}}">Every Friday</span></button>
+<p style="margin: 0; font-size: 13px; color: {{c.mu}}">The next occurrence is created when the current one is completed.</p>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+<h2 style="margin: 0 0 4px; font-size: 15px; font-weight: 600">Reminders</h2>
+<p style="margin: 0; font-size: 14px; line-height: 1.6; color: {{c.tx2}}">Assignees get an in-app and email reminder 24 hours before a due date, and a daily overdue alert. <button type="button" onClick="{{goSettings}}" style="background: none; border: 0; padding: 0; font: inherit; font-weight: 600; color: {{c.ac}}; cursor: pointer">Change in settings</button></p>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isMembers}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+<span style="font-size: 14px; color: {{c.tx2}}">{{memberCount}} members · {{inviteCount}} pending</span>
+<button type="button" onClick="{{openInvite}}" style="margin-left: auto; min-height: 42px; padding: 0 16px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Invite member</button>
+</div>
+<div style="overflow-x: auto; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px">
+<table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px">
+<thead><tr style="text-align: left; font-size: 12px; color: {{c.mu}}"><th scope="col" style="padding: 12px 16px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Name</th><th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Workspace role</th><th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Projects</th><th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Open tasks</th><th scope="col" style="padding: 12px 8px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">Status</th><th scope="col" style="padding: 12px 16px 12px 8px; border-bottom: 1px solid {{c.bd}}"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden">Actions</span></th></tr></thead>
+<tbody>
+<sc-for list="{{memberRows}}" as="m" hint-placeholder-count="5">
+<tr>
+<td style="padding: 10px 16px; border-bottom: 1px solid {{c.bd}}"><span style="display: flex; align-items: center; gap: 10px"><span style="width: 34px; height: 34px; border-radius: 50%; background: {{m.avBg}}; color: {{m.avFg}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{m.initials}}</span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{m.name}}</span><span style="font-size: 12px; color: {{c.mu}}">{{m.email}}</span></span></span></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}"><span style="font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: {{m.roleBg}}; color: {{m.roleFg}}">{{m.role}}</span></td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}; color: {{c.tx2}}">{{m.projects}}</td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}; color: {{c.tx2}}">{{m.open}}</td>
+<td style="padding: 10px 8px; border-bottom: 1px solid {{c.bd}}"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: {{m.statusFg}}"><span style="width: 7px; height: 7px; border-radius: 50%; background: {{m.statusFg}}"></span>{{m.status}}</span></td>
+<td style="padding: 10px 16px 10px 8px; border-bottom: 1px solid {{c.bd}}; text-align: right"><button type="button" onClick="{{m.act}}" style="min-height: 34px; padding: 0 12px; background: none; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">{{m.actLabel}}</button></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<sc-for list="{{roleCards}}" as="r" hint-placeholder-count="3">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; font-weight: 600; color: {{c.mu}}">{{r.scope}}</span><span style="font-size: 15px; font-weight: 600">{{r.roles}}</span><span style="font-size: 13px; line-height: 1.5; color: {{c.tx2}}">{{r.desc}}</span></section>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isNotif}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+<section style="flex: 999 1 460px; min-width: 0; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 2px 4px 10px">
+<sc-for list="{{notifTabs}}" as="f" hint-placeholder-count="4"><button type="button" aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="min-height: 34px; padding: 0 12px; background: {{f.bg}}; border: 1px solid {{f.border}}; border-radius: 17px; font: inherit; font-size: 13px; font-weight: 600; color: {{f.fg}}; cursor: pointer">{{f.label}}</button></sc-for>
+<button type="button" onClick="{{markAllRead}}" style="margin-left: auto; min-height: 34px; background: none; border: 0; font: inherit; font-size: 13px; font-weight: 600; color: {{c.ac}}; cursor: pointer">Mark all as read</button>
+</div>
+<sc-for list="{{notifList}}" as="n" hint-placeholder-count="5">
+<button type="button" onClick="{{n.open}}" style="display: flex; align-items: flex-start; gap: 12px; padding: 12px; background: {{n.bg}}; border: 0; border-radius: 10px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="width: 34px; height: 34px; flex: none; border-radius: 10px; background: {{n.iconBg}}; color: {{n.iconFg}}; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700">{{n.glyph}}</span>
+<span style="flex: 1; display: flex; flex-direction: column; gap: 3px"><span style="font-size: 14px; line-height: 1.5"><b style="font-weight: 600">{{n.who}}</b> {{n.text}}</span><span style="font-size: 12px; color: {{c.mu}}">{{n.when}} · {{n.channel}}</span></span>
+<sc-if value="{{n.unread}}" hint-placeholder-val="{{ false }}"><span style="width: 9px; height: 9px; margin-top: 6px; border-radius: 50%; background: {{c.roseBtn}}"></span></sc-if>
+</button>
+</sc-for>
+<sc-if value="{{notifEmpty}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; padding: 28px; text-align: center; font-size: 14px; color: {{c.mu}}">You’re all caught up.</p></sc-if>
+</section>
+<aside style="flex: 1 1 280px; min-width: 0; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 15px; font-weight: 600">Email delivery</h2>
+<sc-for list="{{prefSummary}}" as="p" hint-placeholder-count="4"><div style="display: flex; justify-content: space-between; min-height: 32px; align-items: center; font-size: 14px"><span style="color: {{c.tx2}}">{{p.label}}</span><span style="font-weight: 600; color: {{p.fg}}">{{p.state}}</span></div></sc-for>
+<button type="button" onClick="{{goSettings}}" style="min-height: 40px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Manage email preferences</button>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{isReports}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<div role="tablist" style="display: flex; gap: 4px; padding: 4px; background: {{c.chip}}; border-radius: 10px"><sc-for list="{{ranges}}" as="v" hint-placeholder-count="3"><button type="button" role="tab" aria-selected="{{v.on}}" onClick="{{v.pick}}" style="min-height: 32px; padding: 0 12px; background: {{v.bg}}; border: 0; border-radius: 7px; font: inherit; font-size: 13px; font-weight: 600; color: {{v.fg}}; cursor: pointer">{{v.label}}</button></sc-for></div>
+<span style="margin-left: auto; display: flex; gap: 8px">
+<button type="button" onClick="{{exportCsv}}" style="min-height: 40px; padding: 0 14px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Export CSV</button>
+<button type="button" onClick="{{exportPdf}}" style="min-height: 40px; padding: 0 14px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Export PDF</button>
+<button type="button" onClick="{{scheduleReport}}" style="min-height: 40px; padding: 0 14px; background: {{c.acBtn}}; border: 0; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 600; color: #FFFFFF; cursor: pointer">Email weekly</button>
+</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 16px; font-weight: 600">Tasks completed per week</h2><span style="font-size: 12px; color: {{c.mu}}">Category DONE</span></div>
+<div style="display: flex; align-items: flex-end; gap: 14px; height: 200px; padding-top: 10px; border-bottom: 1px solid {{c.bd}}">
+<sc-for list="{{trend}}" as="b" hint-placeholder-count="6"><div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%"><span style="font-size: 12px; font-weight: 600; color: {{c.tx2}}">{{b.value}}</span><span style="width: 100%; max-width: 44px; height: {{b.h}}; border-radius: 6px 6px 0 0; background: {{b.color}}"></span></div></sc-for>
+</div>
+<div style="display: flex; gap: 14px"><sc-for list="{{trend}}" as="b" hint-placeholder-count="6"><span style="flex: 1; text-align: center; font-size: 11px; color: {{c.mu}}">{{b.label}}</span></sc-for></div>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 16px; font-weight: 600">Workload by assignee</h2><span style="font-size: 12px; color: {{c.mu}}">Open tasks</span></div>
+<sc-for list="{{workload}}" as="w" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 12px; font-size: 14px"><span style="width: 100px; color: {{c.tx2}}">{{w.name}}</span><span style="flex: 1; height: 22px; background: {{c.chip}}; border-radius: 6px"><span style="display: block; width: {{w.w}}; height: 22px; border-radius: 6px; background: {{w.color}}"></span></span><span style="width: 24px; text-align: right; font-weight: 600">{{w.count}}</span></div>
+</sc-for>
+<p style="margin: 0; font-size: 12px; color: {{c.mu}}">Rose marks anyone with more than 4 open tasks.</p>
+</section>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px">
+<sc-for list="{{health}}" as="h" hint-placeholder-count="3">
+<button type="button" onClick="{{h.go}}" style="display: flex; flex-direction: column; gap: 8px; padding: 18px 20px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left"><span style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{h.color}}"></span>{{h.name}}</span><span style="font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px; align-self: flex-start; background: {{h.badgeBg}}; color: {{h.badgeFg}}">{{h.state}}</span><span style="font-size: 13px; color: {{c.tx2}}">{{h.detail}}</span></button>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isWorkflow}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start">
+<section style="flex: 1 1 320px; min-width: 0; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0 0 4px; font-size: 16px; font-weight: 600">Statuses</h2>
+<p style="margin: 0 0 8px; font-size: 13px; line-height: 1.5; color: {{c.tx2}}">Each status maps to a fixed category so reports stay comparable across projects.</p>
+<sc-for list="{{statusRows}}" as="s" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 10px; min-height: 48px; border-top: 1px solid {{c.bd}}; font-size: 14px"><span style="width: 10px; height: 10px; border-radius: 50%; background: {{s.dot}}"></span><span style="font-weight: 600">{{s.name}}</span><sc-if value="{{s.initial}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; font-weight: 600; color: {{c.ac}}; background: {{c.acSoft}}; border-radius: 4px; padding: 1px 6px">Initial</span></sc-if><span style="margin-left: auto; font-family: JetBrains Mono, monospace; font-size: 10px; color: {{c.tx2}}; background: {{c.chip}}; border-radius: 4px; padding: 2px 6px">{{s.category}}</span><span style="width: 52px; text-align: right; font-size: 12px; color: {{c.mu}}">{{s.count}}</span></div>
+</sc-for>
+<button type="button" onClick="{{addStatus}}" style="margin-top: 8px; min-height: 40px; background: none; border: 1px dashed {{c.bd2}}; border-radius: 10px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">+ Add status</button>
+</section>
+<section style="flex: 2 1 520px; min-width: 0; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; align-items: center; gap: 10px"><h2 style="margin: 0; font-size: 16px; font-weight: 600">Allowed transitions</h2><span style="margin-left: auto; font-size: 13px; color: {{c.tx2}}">{{allowedCount}} allowed</span></div>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: {{c.tx2}}">Click a cell to cycle Blocked → Allowed → Needs approval. The server rejects any other move with <span style="font-family: JetBrains Mono, monospace; font-size: 12px">INVALID_TRANSITION</span>.</p>
+<div style="overflow-x: auto">
+<table style="width: 100%; min-width: 540px; border-collapse: collapse; font-size: 13px">
+<thead><tr><th scope="col" style="text-align: left; padding: 10px 8px; color: {{c.mu}}; font-weight: 600; border-bottom: 1px solid {{c.bd}}">From ↓ To →</th><sc-for list="{{statusNames}}" as="n" hint-placeholder-count="5"><th scope="col" style="padding: 10px 6px; font-weight: 600; border-bottom: 1px solid {{c.bd}}">{{n}}</th></sc-for></tr></thead>
+<tbody>
+<sc-for list="{{matrix}}" as="row" hint-placeholder-count="5">
+<tr><th scope="row" style="text-align: left; padding: 6px 8px; font-weight: 600; white-space: nowrap; border-bottom: 1px solid {{c.bd}}">{{row.from}}</th>
+<sc-for list="{{row.cells}}" as="x" hint-placeholder-count="5"><td style="padding: 4px; text-align: center; border-bottom: 1px solid {{c.bd}}">
+<sc-if value="{{x.self}}" hint-placeholder-val="{{ false }}"><span style="color: {{c.mu}}" aria-hidden="true">—</span></sc-if>
+<sc-if value="{{x.editable}}" hint-placeholder-val="{{ true }}"><button type="button" onClick="{{x.toggle}}" aria-label="{{x.aria}}" style="width: 100%; min-height: 40px; background: {{x.bg}}; border: 1px solid {{x.border}}; border-radius: 8px; font: inherit; font-size: 12px; font-weight: 600; color: {{x.fg}}; cursor: pointer">{{x.text}}</button></sc-if>
+</td></sc-for>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<button type="button" onClick="{{saveWorkflow}}" style="align-self: flex-end; min-height: 42px; padding: 0 18px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Save workflow</button>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{isSettings}}" hint-placeholder-val="{{ false }}">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 18px; align-items: start">
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Appearance</h2>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{themeCards}}" as="t" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{t.on}}" onClick="{{t.pick}}" style="display: flex; flex-direction: column; gap: 8px; padding: 8px; background: {{c.sf2}}; border: 2px solid {{t.border}}; border-radius: 12px; font: inherit; color: {{c.tx}}; cursor: pointer; text-align: left">
+<span style="display: flex; gap: 4px; height: 64px; padding: 6px; box-sizing: border-box; border-radius: 8px; background: {{t.pBg}}"><span style="width: 26%; border-radius: 4px; background: {{t.pSide}}"></span><span style="flex: 1; display: flex; flex-direction: column; gap: 4px"><span style="height: 8px; width: 60%; border-radius: 3px; background: #1DA1D8"></span><span style="flex: 1; border-radius: 4px; background: {{t.pSf}}"></span><span style="height: 8px; width: 34%; border-radius: 3px; background: #FF2E7E"></span></span></span>
+<span style="font-size: 13px; font-weight: 600">{{t.label}}</span>
+</button>
+</sc-for>
+</div>
+<p style="margin: 0; font-size: 13px; color: {{c.mu}}">System follows your device setting. Your choice is saved to your profile.</p>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
+<h2 style="margin: 0 0 6px; font-size: 16px; font-weight: 600">Email notifications</h2>
+<sc-for list="{{prefRows}}" as="p" hint-placeholder-count="5">
+<div style="display: flex; align-items: center; gap: 14px; min-height: 58px; border-top: 1px solid {{c.bd}}">
+<span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">{{p.label}}</span><span style="font-size: 12px; color: {{c.mu}}">{{p.desc}}</span></span>
+<button type="button" role="switch" aria-checked="{{p.on}}" aria-label="{{p.label}}" onClick="{{p.toggle}}" style="position: relative; width: 44px; height: 26px; flex: none; background: {{p.track}}; border: 0; border-radius: 13px; cursor: pointer"><span style="position: absolute; top: 3px; left: {{p.knob}}; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF"></span></button>
+</div>
+</sc-for>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Profile</h2>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Full name<input type="text" value="Riya Shah" style="min-height: 42px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Email<input type="email" value="riya@acme.io" style="min-height: 42px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Time zone<select style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"><option>Asia/Kolkata (UTC+5:30)</option><option>Europe/London (UTC+0)</option><option>America/New_York (UTC−5)</option></select></label>
+<button type="button" onClick="{{saveProfile}}" style="align-self: flex-start; min-height: 40px; padding: 0 16px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Save profile</button>
+</section>
+<section style="background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Security</h2>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; border-top: 1px solid {{c.bd}}; font-size: 14px"><span>Password <span style="color: {{c.mu}}">· changed 3 months ago</span></span><button type="button" onClick="{{changePassword}}" style="min-height: 36px; padding: 0 12px; background: none; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.tx}}; cursor: pointer">Change</button></div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; border-top: 1px solid {{c.bd}}; font-size: 14px"><span>Active sessions <span style="color: {{c.mu}}">· {{sessions}}</span></span><button type="button" onClick="{{signOutOthers}}" style="min-height: 36px; padding: 0 12px; background: none; border: 1px solid {{c.bd}}; border-radius: 8px; font: inherit; font-size: 13px; color: {{c.rose}}; cursor: pointer">Sign out others</button></div>
+</section>
+</div>
+</sc-if>
+
+</main>
+</div>
+
+<sc-if value="{{modalTask}}" hint-placeholder-val="{{ false }}">
+<div style="position: fixed; inset: 0; z-index: 60; background: rgba(5,6,8,0.62); display: flex; align-items: center; justify-content: center; padding: 20px">
+<div role="dialog" aria-modal="true" aria-label="New task" style="width: 100%; max-width: 560px; max-height: 92vh; overflow: auto; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 16px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center"><h2 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 22px; font-weight: 700">New task</h2><button type="button" onClick="{{closeModal}}" aria-label="Close" style="margin-left: auto; width: 40px; height: 40px; background: none; border: 0; border-radius: 10px; color: {{c.tx2}}; font-size: 22px; cursor: pointer">×</button></div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Title<input type="text" value="{{draft.title}}" onChange="{{setDraftTitle}}" placeholder="Design the onboarding checklist" style="min-height: 44px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{draftBorder}}; border-radius: 10px; font: inherit; font-weight: 400; font-size: 15px; color: {{c.tx}}"></label>
+<sc-if value="{{draftError}}" hint-placeholder-val="{{ false }}"><span style="margin-top: -8px; font-size: 13px; color: {{c.rose}}">Enter a title for the task.</span></sc-if>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Project<select value="{{draft.project}}" onChange="{{setDraftProject}}" style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"><option value="web">Website redesign</option><option value="mob">Mobile app</option><option value="bil">Billing</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Priority<select value="{{draft.priority}}" onChange="{{setDraftPriority}}" style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"><option>Low</option><option>Medium</option><option>High</option><option>Urgent</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Assignee<select value="{{draft.who}}" onChange="{{setDraftWho}}" style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"><option value="RS">Riya Shah</option><option value="AK">Arjun Kumar</option><option value="PS">Priya Singh</option><option value="DM">Dev Mehta</option></select></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Due date<input type="date" value="{{draft.due}}" onChange="{{setDraftDue}}" style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"></label>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Description<textarea rows="3" placeholder="What needs to happen, and how will you know it’s done?" style="padding: 10px 12px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}; resize: vertical"></textarea></label>
+<label style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: {{c.tx2}}"><input type="checkbox" checked="{{draft.recurring}}" onChange="{{toggleDraftRecurring}}" style="width: 16px; height: 16px; accent-color: #007BA7">Repeat every week</label>
+<div style="display: flex; align-items: center; gap: 10px; padding-top: 4px"><button type="button" onClick="{{uploadFile}}" style="min-height: 40px; padding: 0 12px; background: none; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 13px; color: {{c.tx2}}; cursor: pointer">Attach files</button><button type="button" onClick="{{closeModal}}" style="margin-left: auto; min-height: 42px; padding: 0 16px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Cancel</button><button type="button" onClick="{{createTask}}" style="min-height: 42px; padding: 0 18px; background: {{c.roseBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Create task</button></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{modalInvite}}" hint-placeholder-val="{{ false }}">
+<div style="position: fixed; inset: 0; z-index: 60; background: rgba(5,6,8,0.62); display: flex; align-items: center; justify-content: center; padding: 20px">
+<div role="dialog" aria-modal="true" aria-label="Invite member" style="width: 100%; max-width: 460px; background: {{c.sf}}; border: 1px solid {{c.bd}}; border-radius: 16px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; align-items: center"><h2 style="margin: 0; font-family: Space Grotesk, Inter, sans-serif; font-size: 22px; font-weight: 700">Invite to {{workspace}}</h2><button type="button" onClick="{{closeModal}}" aria-label="Close" style="margin-left: auto; width: 40px; height: 40px; background: none; border: 0; border-radius: 10px; color: {{c.tx2}}; font-size: 22px; cursor: pointer">×</button></div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Email<input type="email" value="{{invite.email}}" onChange="{{setInviteEmail}}" placeholder="teammate@acme.io" style="min-height: 44px; padding: 0 12px; background: {{c.sf2}}; border: 1px solid {{inviteBorder}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"></label>
+<sc-if value="{{inviteError}}" hint-placeholder-val="{{ false }}"><span style="margin-top: -8px; font-size: 13px; color: {{c.rose}}">Enter a valid email address.</span></sc-if>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: {{c.tx2}}">Workspace role<select value="{{invite.role}}" onChange="{{setInviteRole}}" style="min-height: 42px; padding: 0 10px; background: {{c.sf2}}; border: 1px solid {{c.bd2}}; border-radius: 10px; font: inherit; font-weight: 400; color: {{c.tx}}"><option>Member</option><option>Admin</option></select></label>
+<p style="margin: 0; font-size: 13px; line-height: 1.5; color: {{c.mu}}">They’ll get an email with a link that expires in 7 days.</p>
+<div style="display: flex; justify-content: flex-end; gap: 10px"><button type="button" onClick="{{closeModal}}" style="min-height: 42px; padding: 0 16px; background: {{c.sf2}}; border: 1px solid {{c.bd}}; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; color: {{c.tx}}; cursor: pointer">Cancel</button><button type="button" onClick="{{sendInvite}}" style="min-height: 42px; padding: 0 18px; background: {{c.acBtn}}; color: #FFFFFF; border: 0; border-radius: 10px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Send invite</button></div>
+</div>
+</div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{hasToast}}" hint-placeholder-val="{{ false }}">
+<div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 80; max-width: 380px; display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #0A0A0B; color: #F4F5F7; border: 1px solid #2A2C33; border-radius: 12px; font-size: 14px; box-shadow: 0 12px 32px rgba(0,0,0,0.35)"><span style="width: 8px; height: 8px; border-radius: 50%; background: #FF2E7E; flex: none"></span>{{toast}}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["dark","light"],"default":"dark"},"start":{"editor":"enum","options":["login","dashboard","mytasks","board","task","calendar","members","notifications","reports","workflow","settings"],"default":"members"},"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const T = (key, title, project, status, priority, who, due, tags, extra) => Object.assign({ key, title, project, status, priority, who, due, tags: tags || [] }, extra || {});
+    this.state = {
+      screen: props.start || 'members', project: 'web', taskKey: 'WEB-9', themeOverride: null, wsOpen: false, workspace: 'Acme Corp',
+      modal: null, toast: '', q: '', boardView: 'board', prio: 'All', notifFilter: 'all', loginMode: 'signin', detailTab: 'comments',
+      calMode: 'Month', range: '6 weeks', sel: {}, draftError: false, inviteError: false, commentDraft: '', watching: { 'WEB-9': true }, sessions: 2,
+      draft: { title: '', project: 'web', priority: 'Medium', who: 'RS', due: '2026-11-20', recurring: false },
+      invite: { email: '', role: 'Member' },
+      tasks: [
+        T('WEB-3', 'Design tokens and theme', 'web', 'Done', 'Low', 'RS', '2026-10-22', ['Design']),
+        T('WEB-5', 'Footer links', 'web', 'Done', 'Low', 'DM', '2026-10-27', ['Frontend']),
+        T('WEB-7', 'Hero section and illustrations', 'web', 'In review', 'Urgent', 'AK', '2026-11-04', ['Design'], { sub: '3/3' }),
+        T('WEB-9', 'Login page redesign', 'web', 'In progress', 'High', 'RS', '2026-10-30', ['Frontend', 'Auth'], { sub: '2/4', files: 2 }),
+        T('WEB-12', 'Responsive navigation menu', 'web', 'In progress', 'Medium', 'PS', '2026-11-08', ['Frontend'], { sub: '1/3' }),
+        T('WEB-14', 'Write pricing page copy', 'web', 'To do', 'Low', 'PS', '2026-11-20', ['Content']),
+        T('WEB-17', 'Cookie consent banner', 'web', 'To do', 'Medium', 'AK', '2026-11-25', ['Legal']),
+        T('WEB-18', 'Analytics events', 'web', 'To do', 'Medium', 'DM', '2026-12-02', ['Frontend']),
+        T('WEB-20', 'Weekly status report', 'web', 'To do', 'Low', 'RS', '2026-11-06', ['Ops'], { recurring: 'Every Friday' }),
+        T('MOB-2', 'App icon and splash screen', 'mob', 'Done', 'Low', 'PS', '2026-10-25', ['Design']),
+        T('MOB-4', 'Push notification opt-in', 'mob', 'In progress', 'High', 'RS', '2026-11-06', ['iOS', 'Android']),
+        T('MOB-6', 'Offline task cache', 'mob', 'To do', 'Urgent', 'AK', '2026-11-12', ['Android']),
+        T('MOB-8', 'Biometric sign-in', 'mob', 'To do', 'Medium', 'RS', '2026-11-18', ['iOS']),
+        T('MOB-9', 'Crash reporting setup', 'mob', 'In review', 'Medium', 'DM', '2026-11-05', ['Ops']),
+        T('BIL-10', 'Payment method page', 'bil', 'Done', 'Low', 'DM', '2026-10-20', ['Frontend']),
+        T('BIL-15', 'Webhook retry queue', 'bil', 'In progress', 'Urgent', 'AK', '2026-11-03', ['Backend']),
+        T('BIL-18', 'Tax rates by region', 'bil', 'To do', 'High', 'DM', '2026-11-16', ['Backend']),
+        T('BIL-21', 'Invoice PDF template', 'bil', 'In review', 'High', 'RS', '2026-11-01', ['Design']),
+        T('BIL-22', 'Usage-based pricing plan', 'bil', 'To do', 'Medium', 'PS', '2026-11-27', ['Product'])
+      ],
+      subs: { 'WEB-9': [
+        { key: 'WEB-19', title: 'Layout and form fields', done: true },
+        { key: 'WEB-21', title: 'Client-side validation', done: true },
+        { key: 'WEB-22', title: 'Map API error codes to messages', done: false },
+        { key: 'WEB-23', title: 'Locked-account screen', done: false }
+      ] },
+      files: { 'WEB-9': [
+        { name: 'login-redesign-v3.png', size: '1.2 MB', by: 'Priya Singh', ext: 'PNG' },
+        { name: 'auth-error-codes.pdf', size: '240 KB', by: 'Riya Shah', ext: 'PDF' }
+      ] },
+      comments: { 'WEB-9': [
+        { who: 'PS', text: '@Riya the lockout message should say how long until they can try again. The API returns it in the problem details.', when: '40 min ago' },
+        { who: 'RS', text: 'Good call, adding it to WEB-23.', when: '25 min ago' }
+      ] },
+      history: { 'WEB-9': [
+        { who: 'Riya Shah', text: 'attached auth-error-codes.pdf', when: 'Oct 24' },
+        { who: 'Riya Shah', text: 'moved this from To do to In progress', when: 'Oct 23' },
+        { who: 'Priya Singh', text: 'changed priority from Medium to High', when: 'Oct 22' },
+        { who: 'Priya Singh', text: 'created this task and assigned Riya Shah', when: 'Oct 21' }
+      ] },
+      approvals: { 'BIL-21': 'pending' },
+      allowed: { 'To do>In progress': 1, 'To do>Cancelled': 1, 'In progress>In review': 1, 'In progress>To do': 1, 'In review>Done': 2, 'In review>In progress': 1, 'Done>In progress': 1, 'Cancelled>To do': 1 },
+      notifs: [
+        { id: 1, type: 'mention', who: 'Priya Singh', text: 'mentioned you on WEB-9: “the lockout message should say how long…”', key: 'WEB-9', when: '40 min ago', read: false, channel: 'In-app and email' },
+        { id: 2, type: 'approval', who: 'System', text: 'BIL-21 is waiting for your approval to move to Done', key: 'BIL-21', when: '1 h ago', read: false, channel: 'In-app and email' },
+        { id: 3, type: 'assigned', who: 'Arjun Kumar', text: 'assigned you MOB-4 Push notification opt-in', key: 'MOB-4', when: '2 h ago', read: false, channel: 'In-app and email' },
+        { id: 4, type: 'status', who: 'Arjun Kumar', text: 'moved WEB-7 to In review', key: 'WEB-7', when: '3 h ago', read: true, channel: 'In-app' },
+        { id: 5, type: 'due', who: 'Reminder', text: 'WEB-9 Login page redesign is overdue', key: 'WEB-9', when: 'Yesterday', read: true, channel: 'Email' },
+        { id: 6, type: 'member', who: 'Dev Mehta', text: 'accepted your invitation and joined Acme Corp', key: null, when: 'Oct 29', read: true, channel: 'In-app' }
+      ],
+      members: [
+        { initials: 'RS', name: 'Riya Shah', email: 'riya@acme.io', role: 'Owner', projects: 'All projects', status: 'Active' },
+        { initials: 'AK', name: 'Arjun Kumar', email: 'arjun@acme.io', role: 'Admin', projects: 'Website, Mobile, Billing', status: 'Active' },
+        { initials: 'PS', name: 'Priya Singh', email: 'priya@acme.io', role: 'Member', projects: 'Website, Billing', status: 'Active' },
+        { initials: 'DM', name: 'Dev Mehta', email: 'dev@acme.io', role: 'Member', projects: 'Mobile, Billing', status: 'Active' },
+        { initials: 'NJ', name: 'Neha Joshi', email: 'neha@acme.io', role: 'Member', projects: 'Billing (viewer)', status: 'Invited' }
+      ],
+      prefs: { assigned: true, mentions: true, due: true, approvals: true, digest: false }
+    };
+  }
+  set(p) { this.setState(p); }
+  go(screen, extra) { this.setState(Object.assign({ screen, wsOpen: false, q: '', sel: {} }, extra || {})); }
+  toastMsg(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 2800);
+  }
+  updateTask(key, patch) { this.setState({ tasks: this.state.tasks.map((t) => (t.key === key ? Object.assign({}, t, patch) : t)) }); }
+  addHistory(key, text) {
+    const h = Object.assign({}, this.state.history);
+    h[key] = [{ who: 'Riya Shah', text, when: 'Just now' }].concat(h[key] || []);
+    return h;
+  }
+  pal(mode) {
+    return mode === 'light' ? {
+      bg: '#F3F5F8', side: '#FFFFFF', sf: '#FFFFFF', sf2: '#F7F8FA', lane: '#EDF0F4', bd: '#E3E6EB', bd2: '#CDD2DA', tx: '#0A0A0B', tx2: '#3F4450', mu: '#5F6573',
+      ac: '#00729B', acBtn: '#007BA7', acSoft: '#E0F1F8', rose: '#C8104F', roseBtn: '#D1105A', roseSoft: '#FDE7EF', ok: '#087443', okBtn: '#087443', okSoft: '#DDF5E8',
+      warn: '#8A5A00', warnSoft: '#FFF3D6', chip: '#EDEFF2', violet: '#6941C6', logoStroke: '#0A0A0B'
+    } : {
+      bg: '#0A0A0B', side: '#0F1012', sf: '#16171A', sf2: '#1C1E22', lane: '#121316', bd: '#26282E', bd2: '#363942', tx: '#F4F5F7', tx2: '#B4B8C2', mu: '#8D929E',
+      ac: '#4FB8E6', acBtn: '#007BA7', acSoft: '#0B2836', rose: '#FF5C9D', roseBtn: '#D1105A', roseSoft: '#3A0E20', ok: '#4AD08A', okBtn: '#087443', okSoft: '#0E2C1D',
+      warn: '#F5B544', warnSoft: '#2E230B', chip: '#22242A', violet: '#A78BFA', logoStroke: '#2A2C33'
+    };
+  }
+  renderVals() {
+    const s = this.state;
+    const mode = s.themeOverride || this.props.theme || 'dark';
+    const c = this.pal(mode);
+    const PROJ = { web: { name: 'Website redesign', key: 'WEB', color: '#1DA1D8' }, mob: { name: 'Mobile app', key: 'MOB', color: '#FF2E7E' }, bil: { name: 'Billing', key: 'BIL', color: '#F5B544' } };
+    const PEOPLE = { RS: 'Riya Shah', AK: 'Arjun Kumar', PS: 'Priya Singh', DM: 'Dev Mehta', NJ: 'Neha Joshi' };
+    const AV = { RS: [c.acSoft, c.ac], AK: [c.roseSoft, c.rose], PS: [c.warnSoft, c.warn], DM: [c.okSoft, c.ok], NJ: [c.chip, c.tx2] };
+    const STAT = ['To do', 'In progress', 'In review', 'Done', 'Cancelled'];
+    const CAT = { 'To do': 'TODO', 'In progress': 'IN_PROGRESS', 'In review': 'IN_PROGRESS', 'Done': 'DONE', 'Cancelled': 'CANCELLED' };
+    const DOT = { 'To do': c.mu, 'In progress': '#1DA1D8', 'In review': c.violet, 'Done': c.ok, 'Cancelled': c.bd2 };
+    const PRI = { Urgent: [c.roseSoft, c.rose], High: [c.warnSoft, c.warn], Medium: [c.acSoft, c.ac], Low: [c.chip, c.tx2] };
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const TODAY = '2026-11-02';
+    const fmt = (d) => MON[parseInt(d.slice(5, 7), 10) - 1] + ' ' + parseInt(d.slice(8, 10), 10);
+    const closed = (t) => t.status === 'Done' || t.status === 'Cancelled';
+    const deco = (t) => {
+      const overdue = !closed(t) && t.due < TODAY;
+      const p = PROJ[t.project];
+      const av = AV[t.who] || AV.NJ;
+      const meta = [t.sub ? '✓ ' + t.sub : '', t.files ? '⎘ ' + t.files : ''].filter(Boolean).join('  ');
+      return Object.assign({}, t, {
+        overdue, dueLabel: (t.status === 'Done' ? 'Done · ' : overdue ? 'Overdue · ' : '') + fmt(t.due),
+        dueBg: overdue ? c.roseSoft : c.chip, dueFg: overdue ? c.rose : c.tx2, dueFg2: overdue ? c.rose : c.tx2, dueWeight: overdue ? '600' : '400',
+        pBg: PRI[t.priority][0], pFg: PRI[t.priority][1], avBg: av[0], avFg: av[1], whoName: PEOPLE[t.who],
+        projName: p.name, projKey: p.key, projColor: p.color, statusDot: DOT[t.status], category: CAT[t.status],
+        cardBorder: s.approvals[t.key] === 'pending' ? c.warn : (overdue ? c.rose : c.bd), meta: t.recurring ? '↻ weekly' : meta,
+        calTitle: t.title, chipBg: c.sf2, chipKey: c.mu,
+        open: () => this.go('task', { taskKey: t.key, detailTab: 'comments', commentDraft: '' })
+      });
+    };
+    const tasks = s.tasks.map(deco);
+    const byKey = {}; tasks.forEach((t) => { byKey[t.key] = t; });
+    const proj = PROJ[s.project];
+    const unread = s.notifs.filter((n) => !n.read).length;
+    const myOpen = tasks.filter((t) => t.who === 'RS' && !closed(t));
+
+    const screens = {
+      dashboard: ['Dashboard', s.workspace + ' · 3 projects'], mytasks: ['My tasks', 'Assigned to you across every project'],
+      board: [proj.name, s.workspace + ' / Projects / ' + proj.key], task: [s.taskKey, s.workspace + ' / ' + (byKey[s.taskKey] ? byKey[s.taskKey].projName : '')],
+      calendar: ['Calendar', 'Deadlines, milestones and recurring work'], members: ['Members', s.workspace + ' · workspace settings'],
+      notifications: ['Notifications', unread + ' unread'], reports: ['Reports', 'Analytics for ' + s.workspace],
+      workflow: ['Workflow', proj.name + ' · project settings'], settings: ['Settings', 'Your profile and preferences']
+    };
+    const meta = screens[s.screen] || screens.dashboard;
+    const IC = {
+      dashboard: 'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z', mytasks: 'M9 11l3 3 8-8M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9',
+      calendar: 'M4 5h16v16H4zM4 10h16M9 3v4M15 3v4', reports: 'M5 20V11M12 20V5M19 20v-6M3 20h18',
+      members: 'M13 8a4 4 0 1 1-8 0a4 4 0 1 1 8 0M2 21v-1a7 7 0 0 1 14 0v1M17 4a4 4 0 0 1 0 8M22 21v-1a6 6 0 0 0-4-5.6',
+      notifications: 'M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21a2 2 0 0 0 4 0', settings: 'M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1M15 4v4M9 10v4M17 16v4'
+    };
+    const navDef = [['dashboard', 'Dashboard'], ['mytasks', 'My tasks', myOpen.length, false], ['calendar', 'Calendar'], ['reports', 'Reports'], ['members', 'Members'], ['notifications', 'Notifications', unread, true], ['settings', 'Settings']];
+    const nav = navDef.map((n) => {
+      const on = s.screen === n[0];
+      return { label: n[1], icon: IC[n[0]], bg: on ? c.acSoft : 'transparent', fg: on ? c.ac : c.tx2, weight: on ? '600' : '500', hasBadge: !!n[2], badge: n[2] || '', badgeBg: n[3] ? c.roseBtn : c.chip, badgeFg: n[3] ? '#FFFFFF' : c.tx2, go: () => this.go(n[0]) };
+    });
+    const projNav = Object.keys(PROJ).map((k) => {
+      const on = (s.screen === 'board' || s.screen === 'workflow') && s.project === k;
+      return Object.assign({}, PROJ[k], { bg: on ? c.acSoft : 'transparent', fg: on ? c.ac : c.tx2, weight: on ? '600' : '500', go: () => this.go('board', { project: k, boardView: 'board', prio: 'All' }) });
+    });
+    const workspaces = [['Acme Corp', '3 projects'], ['Globex Labs', '1 project']].map((w) => ({ name: w[0], meta: w[1], initial: w[0][0], bg: w[0] === s.workspace ? c.acSoft : 'transparent', pick: () => { this.setState({ workspace: w[0], wsOpen: false }); this.toastMsg('Switched to ' + w[0]); } }));
+
+    const q = s.q.trim().toLowerCase();
+    const results = q ? tasks.filter((t) => (t.key + ' ' + t.title + ' ' + t.whoName).toLowerCase().indexOf(q) >= 0).slice(0, 6) : [];
+
+    const cats = [['To do', 'TODO', c.mu], ['In progress', 'IN_PROGRESS', '#1DA1D8'], ['Done', 'DONE', c.ok], ['Cancelled', 'CANCELLED', c.bd2]];
+    const catBar = cats.map((x) => { const n = tasks.filter((t) => t.category === x[1]).length; return { label: x[0], count: n, color: x[2], w: Math.round((n / tasks.length) * 100) + '%' }; });
+    const overdueAll = tasks.filter((t) => t.overdue);
+    const metrics = [
+      { label: 'Open tasks', value: tasks.filter((t) => t.category === 'TODO').length, note: 'Category TODO', color: c.tx, noteColor: c.mu, border: c.bd, go: () => this.go('mytasks') },
+      { label: 'In progress', value: tasks.filter((t) => t.category === 'IN_PROGRESS').length, note: 'Includes In review', color: '#1DA1D8', noteColor: c.mu, border: c.bd, go: () => this.go('board') },
+      { label: 'Done', value: tasks.filter((t) => t.status === 'Done').length, note: '+6 vs last week', color: c.ok, noteColor: c.ok, border: c.bd, go: () => this.go('reports') },
+      { label: 'Overdue', value: overdueAll.length, note: overdueAll.filter((t) => t.who === 'RS').length + ' assigned to you', color: c.rose, noteColor: c.rose, border: c.rose, go: () => this.go('mytasks') }
+    ];
+    const projStats = Object.keys(PROJ).map((k) => { const all = tasks.filter((t) => t.project === k); const d = all.filter((t) => t.status === 'Done').length; return Object.assign({}, PROJ[k], { pctLabel: Math.round((d / all.length) * 100) + '%', go: () => this.go('board', { project: k, boardView: 'board' }) }); });
+    const upcoming = myOpen.slice().sort((a, b) => (a.due < b.due ? -1 : 1)).slice(0, 5);
+    const activity = [
+      ['AK', 'Arjun Kumar', 'moved WEB-7 from In progress to In review', '12 min ago'], ['PS', 'Priya Singh', 'commented on WEB-9', '40 min ago'],
+      ['RS', 'Riya Shah', 'assigned MOB-4 to herself', '2 h ago'], ['DM', 'Dev Mehta', 'uploaded crash-report.json to MOB-9', '5 h ago']
+    ].map((a) => ({ who: a[0], name: a[1], text: a[2], when: a[3], avBg: AV[a[0]][0], avFg: AV[a[0]][1] }));
+    const pendingList = tasks.filter((t) => s.approvals[t.key] === 'pending');
+
+    const views = [['board', 'Board'], ['list', 'List'], ['calendar', 'Calendar']].map((v) => { const on = s.boardView === v[0]; return { label: v[1], on, bg: on ? c.sf : 'transparent', fg: on ? c.tx : c.tx2, pick: () => (v[0] === 'calendar' ? this.go('calendar') : this.setState({ boardView: v[0] })) }; });
+    const prioFilters = ['All', 'Urgent', 'High', 'Medium', 'Low'].map((p) => { const on = s.prio === p; return { label: p === 'All' ? 'All priorities' : p, on, bg: on ? c.acSoft : c.sf, border: on ? c.ac : c.bd, fg: on ? c.ac : c.tx2, pick: () => this.setState({ prio: p }) }; });
+    const projTasks = tasks.filter((t) => t.project === s.project && (s.prio === 'All' || t.priority === s.prio));
+    const columns = ['To do', 'In progress', 'In review', 'Done'].map((st) => { const cards = projTasks.filter((t) => t.status === st); return { name: st, category: CAT[st], dot: DOT[st], count: cards.length, cards }; });
+
+    const tableSrc = s.screen === 'mytasks' ? tasks.filter((t) => t.who === 'RS').sort((a, b) => (closed(a) - closed(b)) || (a.due < b.due ? -1 : 1)) : projTasks;
+    const tableRows = tableSrc.map((t) => { const on = !!s.sel[t.key]; return Object.assign({}, t, { selOn: on, rowBg: on ? c.acSoft : 'transparent', selLabel: 'Select ' + t.key, toggleSel: () => { const sel = Object.assign({}, s.sel); if (sel[t.key]) delete sel[t.key]; else sel[t.key] = 1; this.setState({ sel }); } }); });
+    const selKeys = Object.keys(s.sel);
+    const bulk = (patch, msg) => { this.setState({ tasks: s.tasks.map((t) => (s.sel[t.key] ? Object.assign({}, t, patch) : t)), sel: {} }); this.toastMsg(msg); };
+
+    const task = byKey[s.taskKey] || tasks[0];
+    const NEXT = {}; STAT.forEach((f) => { NEXT[f] = STAT.filter((t) => s.allowed[f + '>' + t]); });
+    const pending = s.approvals[task.key] === 'pending';
+    const subList = s.subs[task.key] || [];
+    const subtasks = subList.map((x, i) => ({ key: x.key, title: x.title, done: x.done, fg: x.done ? c.mu : c.tx, deco: x.done ? 'line-through' : 'none', toggle: () => { const subs = Object.assign({}, s.subs); subs[task.key] = subList.map((y, j) => (j === i ? Object.assign({}, y, { done: !y.done }) : y)); this.setState({ subs }); } }));
+    const subDoneN = subList.filter((x) => x.done).length;
+    const taskVals = Object.assign({}, task, {
+      pending, canMove: !pending, isRecurring: !!task.recurring,
+      subDone: subList.length ? subDoneN + ' of ' + subList.length + ' done' : 'None yet',
+      desc: task.key === 'WEB-9' ? 'Rebuild the sign-in screen with the new Flowlane tokens. Show field-level validation from the API’s problem-details response and handle the locked-account state after repeated failed attempts.' : 'Scope, acceptance criteria and links for this task live here. Edit the description to add detail for whoever picks it up.',
+      openProject: () => this.go('board', { project: task.project, boardView: 'board' })
+    });
+    const moves = NEXT[task.status].map((to) => ({ label: to, go: () => {
+      const level = s.allowed[task.status + '>' + to];
+      if (to === 'Done' && subList.some((x) => !x.done)) { this.toastMsg('Finish the open subtasks before moving to Done.'); return; }
+      if (level === 2) {
+        const approvals = Object.assign({}, s.approvals); approvals[task.key] = 'pending';
+        this.setState({ approvals, history: this.addHistory(task.key, 'requested approval to move to ' + to) });
+        this.toastMsg('Approval requested. Project managers were notified.');
+        return;
+      }
+      this.setState({ tasks: s.tasks.map((t) => (t.key === task.key ? Object.assign({}, t, { status: to }) : t)), history: this.addHistory(task.key, 'moved this from ' + task.status + ' to ' + to) });
+      this.toastMsg(task.key + ' moved to ' + to);
+    } }));
+    const fileList = (s.files[task.key] || []).map((f) => Object.assign({}, f, { bg: f.ext === 'PDF' ? c.roseSoft : c.acSoft, fg: f.ext === 'PDF' ? c.rose : c.ac }));
+    const depDefs = task.key === 'WEB-9' ? [['Blocked by', 'WEB-3'], ['Related', 'WEB-12']] : task.key === 'WEB-7' ? [['Blocks', 'WEB-14']] : task.key === 'BIL-21' ? [['Blocked by', 'BIL-10']] : [];
+    const deps = depDefs.filter((d) => byKey[d[1]]).map((d) => ({ rel: d[0], key: d[1], title: byKey[d[1]].title, dot: byKey[d[1]].statusDot, relFg: d[0] === 'Blocked by' ? c.rose : c.ac, open: byKey[d[1]].open }));
+    const comments = (s.comments[task.key] || []).map((m) => ({ who: m.who, name: PEOPLE[m.who], text: m.text, when: m.when, avBg: AV[m.who][0], avFg: AV[m.who][1] }));
+    const histList = s.history[task.key] || [{ who: PEOPLE[task.who], text: 'created this task', when: fmt(task.due) }];
+    const detailTabs = [['comments', 'Comments ' + comments.length], ['history', 'History ' + histList.length]].map((d) => { const on = s.detailTab === d[0]; return { label: d[1], on, fg: on ? c.tx : c.tx2, border: on ? '#1DA1D8' : 'transparent', pick: () => this.setState({ detailTab: d[0] }) }; });
+    const fields = [
+      ['Assignee', PEOPLE[task.who]], ['Reporter', 'Priya Singh'], ['Priority', task.priority], ['Due date', fmt(task.due) + ', 2026' + (task.overdue ? ' · overdue' : ''), task.overdue],
+      ['Estimate', '5 points'], ['Labels', task.tags.join(', ') || 'None'], ['Repeats', task.recurring || 'Never']
+    ].map((f) => ({ label: f[0], value: f[1], fg: f[2] ? c.rose : c.tx, weight: f[2] ? '600' : '500' }));
+
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const MILE = { 15: 'Mobile beta', 30: 'Website go-live' };
+    const calCells = [];
+    for (let i = 0; i < 35; i++) {
+      const inMonth = i < 30;
+      const dnum = inMonth ? i + 1 : i - 29;
+      const iso = (inMonth ? '2026-11-' : '2026-12-') + (dnum < 10 ? '0' + dnum : dnum);
+      let items = tasks.filter((t) => t.due === iso);
+      if (inMonth && (dnum === 13 || dnum === 20 || dnum === 27)) items = items.concat([Object.assign({}, byKey['WEB-20'], { calTitle: '↻ Weekly status report' })]);
+      items = items.map((t) => Object.assign({}, t, { chipBg: t.overdue ? c.roseSoft : c.sf2, chipKey: t.overdue ? c.rose : c.mu }));
+      const isToday = iso === TODAY;
+      calCells.push({ day: dnum, bg: inMonth ? 'transparent' : c.sf2, numBg: isToday ? c.roseBtn : 'transparent', numFg: isToday ? '#FFFFFF' : (inMonth ? c.tx : c.mu), items: items.slice(0, 3), hasMore: items.length > 3, more: items.length - 3, hasMilestone: inMonth && !!MILE[dnum], milestone: MILE[dnum] || '' });
+    }
+    const calModes = ['Month', 'Week'].map((m) => { const on = s.calMode === m; return { label: m, on, bg: on ? c.sf : 'transparent', fg: on ? c.tx : c.tx2, pick: () => { this.setState({ calMode: m }); if (m === 'Week') this.toastMsg('Week view shows the same tasks hour by hour.'); } }; });
+    const projLegend = Object.keys(PROJ).map((k) => PROJ[k]);
+
+    const counts = {}; tasks.forEach((t) => { if (!closed(t)) counts[t.who] = (counts[t.who] || 0) + 1; });
+    const maxW = Math.max.apply(null, Object.keys(counts).map((k) => counts[k]).concat([1]));
+    const memberRows = s.members.map((m) => ({
+      initials: m.initials, name: m.name, email: m.email, role: m.role, projects: m.projects, status: m.status, open: m.status === 'Invited' ? '—' : (counts[m.initials] || 0),
+      avBg: (AV[m.initials] || AV.NJ)[0], avFg: (AV[m.initials] || AV.NJ)[1],
+      roleBg: m.role === 'Owner' ? c.roseSoft : m.role === 'Admin' ? c.acSoft : c.chip, roleFg: m.role === 'Owner' ? c.rose : m.role === 'Admin' ? c.ac : c.tx2,
+      statusFg: m.status === 'Active' ? c.ok : c.warn, actLabel: m.status === 'Invited' ? 'Resend invite' : 'Manage',
+      act: () => this.toastMsg(m.status === 'Invited' ? 'Invitation email resent to ' + m.email : 'Role and project access for ' + m.name + ' open in a side panel.')
+    }));
+    const roleCards = [
+      { scope: 'Workspace roles', roles: 'Owner · Admin · Member', desc: 'Control who can invite people, create projects and manage the workspace.' },
+      { scope: 'Project roles', roles: 'Manager · Contributor · Viewer', desc: 'Set per project. Managers approve transitions and edit the workflow.' },
+      { scope: 'Isolation', roles: 'Workspace boundary', desc: 'Nobody sees data from a workspace they don’t belong to, even with a direct link.' }
+    ];
+
+    const GLY = { mention: ['@', c.acSoft, c.ac], approval: ['✓', c.warnSoft, c.warn], assigned: ['→', c.roseSoft, c.rose], status: ['↔', c.chip, c.tx2], due: ['!', c.roseSoft, c.rose], member: ['+', c.okSoft, c.ok] };
+    const nf = s.notifFilter;
+    const notifTabs = [['all', 'All'], ['unread', 'Unread ' + unread], ['mention', 'Mentions'], ['approval', 'Approvals']].map((f) => { const on = nf === f[0]; return { label: f[1], on, bg: on ? c.acSoft : c.sf, border: on ? c.ac : c.bd, fg: on ? c.ac : c.tx2, pick: () => this.setState({ notifFilter: f[0] }) }; });
+    const notifList = s.notifs.filter((n) => nf === 'all' || (nf === 'unread' ? !n.read : n.type === nf)).map((n) => ({
+      who: n.who, text: n.text, when: n.when, channel: n.channel, unread: !n.read, bg: n.read ? 'transparent' : c.sf2,
+      glyph: GLY[n.type][0], iconBg: GLY[n.type][1], iconFg: GLY[n.type][2],
+      open: () => { const notifs = s.notifs.map((x) => (x.id === n.id ? Object.assign({}, x, { read: true }) : x)); if (n.key) this.go('task', { notifs, taskKey: n.key, detailTab: 'comments' }); else this.go('members', { notifs }); }
+    }));
+    const PREFS = [['assigned', 'Assigned to me', 'When someone gives you a task'], ['mentions', 'Mentions and comments', 'When you’re @mentioned or someone replies'], ['due', 'Due-date reminders', '24 hours before, plus daily overdue alerts'], ['approvals', 'Approval requests', 'When a transition needs your sign-off'], ['digest', 'Daily digest', 'One summary email at 8:00 in your time zone']];
+    const prefRows = PREFS.map((p) => { const on = !!s.prefs[p[0]]; return { label: p[1], desc: p[2], on, track: on ? '#007BA7' : c.bd2, knob: on ? '21px' : '3px', toggle: () => { const prefs = Object.assign({}, s.prefs); prefs[p[0]] = !on; this.setState({ prefs }); this.toastMsg(p[1] + ' emails ' + (on ? 'turned off' : 'turned on')); } }; });
+    const prefSummary = PREFS.slice(0, 4).map((p) => ({ label: p[1], state: s.prefs[p[0]] ? 'On' : 'Off', fg: s.prefs[p[0]] ? c.ok : c.mu }));
+
+    const ranges = ['4 weeks', '6 weeks', 'Quarter'].map((r) => { const on = s.range === r; return { label: r, on, bg: on ? c.sf : 'transparent', fg: on ? c.tx : c.tx2, pick: () => this.setState({ range: r }) }; });
+    const trendData = [['Sep 28', 8], ['Oct 5', 11], ['Oct 12', 9], ['Oct 19', 14], ['Oct 26', 17], ['Nov 2', 23]];
+    const trend = trendData.map((d, i) => ({ label: d[0], value: d[1], h: Math.round((d[1] / 23) * 150) + 'px', color: i === trendData.length - 1 ? '#FF2E7E' : '#1DA1D8' }));
+    const workload = ['RS', 'AK', 'PS', 'DM'].map((k) => ({ name: PEOPLE[k], count: counts[k] || 0, w: Math.round(((counts[k] || 0) / maxW) * 100) + '%', color: (counts[k] || 0) > 4 ? '#FF2E7E' : '#1DA1D8' }));
+    const health = Object.keys(PROJ).map((k) => { const od = tasks.filter((t) => t.project === k && t.overdue).length; const risk = od > 0; return { name: PROJ[k].name, color: PROJ[k].color, state: risk ? 'At risk' : 'On track', badgeBg: risk ? c.roseSoft : c.okSoft, badgeFg: risk ? c.rose : c.ok, detail: risk ? od + ' overdue task' + (od > 1 ? 's' : '') + ' · open the board' : 'No overdue tasks', go: () => this.go('board', { project: k, boardView: 'board' }) }; });
+
+    const statusRows = STAT.map((st) => ({ name: st, category: CAT[st], dot: DOT[st], initial: st === 'To do', count: tasks.filter((t) => t.project === s.project && t.status === st).length + ' tasks' }));
+    const matrix = STAT.map((from) => ({ from, cells: STAT.map((to) => {
+      const key = from + '>' + to; const lv = s.allowed[key] || 0;
+      return { self: from === to, editable: from !== to, text: lv === 2 ? 'Approval' : lv === 1 ? 'Allowed' : '', aria: from + ' to ' + to + ': ' + (lv === 2 ? 'needs approval' : lv === 1 ? 'allowed' : 'blocked'),
+        bg: lv === 2 ? c.warnSoft : lv === 1 ? c.acSoft : 'transparent', border: lv === 2 ? c.warn : lv === 1 ? c.ac : c.bd, fg: lv === 2 ? c.warn : c.ac,
+        toggle: () => { const allowed = Object.assign({}, s.allowed); const n = ((allowed[key] || 0) + 1) % 3; if (n) allowed[key] = n; else delete allowed[key]; this.setState({ allowed }); } };
+    }) }));
+
+    const themeCards = [['dark', 'Dark', '#0A0A0B', '#16171A', '#0F1012'], ['light', 'Light', '#F3F5F8', '#FFFFFF', '#FFFFFF'], ['system', 'System', '#0A0A0B', '#FFFFFF', '#16171A']].map((t) => {
+      const on = t[0] === 'system' ? s.themeOverride === 'system-pick' : (s.themeOverride !== 'system-pick' && mode === t[0]);
+      return { label: t[1], on, border: on ? '#1DA1D8' : c.bd, pBg: t[2], pSf: t[3], pSide: t[4], pick: () => { this.setState({ themeOverride: t[0] === 'system' ? 'system-pick' : t[0] }); this.toastMsg(t[1] + ' theme applied'); } };
+    });
+    const realMode = s.themeOverride === 'system-pick' ? 'dark' : mode;
+    const cc = s.themeOverride === 'system-pick' ? this.pal('dark') : c;
+    const draftBorder = s.draftError ? c.rose : c.bd2;
+    const lm = s.loginMode;
+    const LT = { signin: ['Sign in', 'Welcome back. Use your work email.', 'Sign in', 'New to Flowlane?', 'Create an account'], signup: ['Create your account', 'Start a workspace for your team in a minute.', 'Create account', 'Already have an account?', 'Sign in'], reset: ['Reset password', 'We’ll email you a link to choose a new password.', 'Email me a reset link', 'Remembered it?', 'Back to sign in'] }[lm];
+
+    return {
+      c: cc, isLogin: s.screen === 'login', isApp: s.screen !== 'login',
+      themeLabel: realMode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
+      themeIcon: realMode === 'dark' ? 'M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4M16 12a4 4 0 1 1-8 0a4 4 0 1 1 8 0' : 'M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z',
+      toggleTheme: () => this.setState({ themeOverride: realMode === 'dark' ? 'light' : 'dark' }),
+      loginTitle: LT[0], loginSub: LT[1], loginCta: LT[2], loginSwitchText: LT[3], loginSwitchCta: LT[4],
+      isSignup: lm === 'signup', isSignin: lm === 'signin', notReset: lm !== 'reset',
+      toReset: () => this.setState({ loginMode: 'reset' }),
+      loginSwitch: () => this.setState({ loginMode: lm === 'signin' ? 'signup' : 'signin' }),
+      loginSubmit: () => { if (lm === 'reset') { this.setState({ loginMode: 'signin' }); this.toastMsg('Reset link sent. Check your email.'); } else this.go('dashboard'); },
+      workspace: s.workspace, wsInitial: s.workspace[0], wsOpen: s.wsOpen, workspaces,
+      toggleWs: () => this.setState({ wsOpen: !s.wsOpen }),
+      createWorkspace: () => { this.setState({ wsOpen: false }); this.toastMsg('New workspace created. Invite your team from Members.'); },
+      nav, projNav, newProject: () => this.toastMsg('New project: name, key and starting workflow'),
+      goSettings: () => this.go('settings'), goNotifs: () => this.go('notifications'), goMyTasks: () => this.go('mytasks'), goCalendar: () => this.go('calendar'),
+      goMembers: () => this.go('members'), goWorkflow: () => this.go('workflow'),
+      logout: () => this.go('login', { loginMode: 'signin' }),
+      title: meta[0], sub: meta[1], q: s.q, setQ: (e) => this.setState({ q: e.target.value }), hasQuery: q.length > 0, results, noResults: q.length > 0 && results.length === 0,
+      hasUnread: unread > 0,
+      openNewTask: () => this.setState({ modal: 'task', draftError: false, draft: Object.assign({}, s.draft, { title: '', project: s.project }) }),
+      isDash: s.screen === 'dashboard', metrics, projStats, catBar, upcoming, activity, pendingList, noPending: pendingList.length === 0,
+      isBoard: s.screen === 'board', boardIsBoard: s.boardView === 'board', views, prioFilters, columns,
+      showTable: s.screen === 'mytasks' || (s.screen === 'board' && s.boardView === 'list'), tableRows, tableEmpty: tableRows.length === 0,
+      hasSel: selKeys.length > 0, selCount: selKeys.length,
+      bulkAssign: () => bulk({ who: 'RS' }, selKeys.length + ' tasks assigned to you'),
+      bulkPriority: () => bulk({ priority: 'High' }, 'Priority set to High on ' + selKeys.length + ' tasks'),
+      bulkClear: () => this.setState({ sel: {} }),
+      isTask: s.screen === 'task', task: taskVals, subtasks, attachments: fileList, deps, noDeps: deps.length === 0, moves,
+      uploadFile: () => { const files = Object.assign({}, s.files); files[task.key] = (files[task.key] || []).concat([{ name: 'notes-' + task.key.toLowerCase() + '.pdf', size: '86 KB', by: 'Riya Shah', ext: 'PDF' }]); this.setState({ files, history: this.addHistory(task.key, 'attached a file') }); this.toastMsg('File uploaded and scanned'); },
+      addDep: () => this.toastMsg('Search for a task to link as blocking or blocked by'),
+      detailTabs, tabComments: s.detailTab === 'comments', tabHistory: s.detailTab === 'history', comments, history: histList,
+      commentDraft: s.commentDraft, setComment: (e) => this.setState({ commentDraft: e.target.value }),
+      postComment: () => { const txt = s.commentDraft.trim(); if (!txt) { this.toastMsg('Write something first'); return; } const cm = Object.assign({}, s.comments); cm[task.key] = (cm[task.key] || []).concat([{ who: 'RS', text: txt, when: 'Just now' }]); this.setState({ comments: cm, commentDraft: '' }); this.toastMsg(txt.indexOf('@') >= 0 ? 'Comment posted. Mentioned people were notified.' : 'Comment posted'); },
+      approve: () => { const approvals = Object.assign({}, s.approvals); delete approvals[task.key]; this.setState({ approvals, tasks: s.tasks.map((t) => (t.key === task.key ? Object.assign({}, t, { status: 'Done' }) : t)), history: this.addHistory(task.key, 'approved the move to Done') }); this.toastMsg(task.key + ' approved and moved to Done'); },
+      reject: () => { const approvals = Object.assign({}, s.approvals); delete approvals[task.key]; this.setState({ approvals, tasks: s.tasks.map((t) => (t.key === task.key ? Object.assign({}, t, { status: 'In progress' }) : t)), history: this.addHistory(task.key, 'sent this back to In progress') }); this.toastMsg('Sent back to In progress with a note to the assignee'); },
+      fields, watching: !!s.watching[task.key], toggleWatch: () => { const w = Object.assign({}, s.watching); w[task.key] = !w[task.key]; this.setState({ watching: w }); this.toastMsg(w[task.key] ? 'You’ll get emails about this task' : 'Emails for this task turned off'); },
+      isCal: s.screen === 'calendar', weekdays, calCells, calModes, projLegend, calCellH: '118px', calPrev: () => this.toastMsg('Only November 2026 has sample data in this mockup'),
+      openRecurring: byKey['WEB-20'].open,
+      isMembers: s.screen === 'members', memberRows, roleCards, memberCount: s.members.filter((m) => m.status === 'Active').length, inviteCount: s.members.filter((m) => m.status === 'Invited').length,
+      openInvite: () => this.setState({ modal: 'invite', inviteError: false, invite: { email: '', role: 'Member' } }),
+      isNotif: s.screen === 'notifications', notifTabs, notifList, notifEmpty: notifList.length === 0, prefSummary,
+      markAllRead: () => { this.setState({ notifs: s.notifs.map((n) => Object.assign({}, n, { read: true })) }); this.toastMsg('All notifications marked as read'); },
+      isReports: s.screen === 'reports', ranges, trend, workload, health,
+      exportCsv: () => this.toastMsg('CSV export is downloading'), exportPdf: () => this.toastMsg('PDF report is being generated. We’ll email it when ready.'), scheduleReport: () => this.toastMsg('This report will arrive every Monday at 9:00'),
+      isWorkflow: s.screen === 'workflow', statusRows, statusNames: STAT, matrix, allowedCount: Object.keys(s.allowed).length,
+      addStatus: () => this.toastMsg('New status: pick a name, colour and category'), saveWorkflow: () => this.toastMsg('Workflow saved. New rules apply to the next move.'),
+      isSettings: s.screen === 'settings', themeCards, prefRows, sessions: s.sessions === 1 ? 'this device only' : s.sessions + ' devices',
+      saveProfile: () => this.toastMsg('Profile saved'), changePassword: () => this.toastMsg('We emailed you a secure link to change your password'),
+      signOutOthers: () => { this.setState({ sessions: 1 }); this.toastMsg('Signed out of all other devices'); },
+      modalTask: s.modal === 'task', modalInvite: s.modal === 'invite', closeModal: () => this.setState({ modal: null }),
+      draft: s.draft, draftError: s.draftError, draftBorder,
+      setDraftTitle: (e) => this.setState({ draft: Object.assign({}, s.draft, { title: e.target.value }), draftError: false }),
+      setDraftProject: (e) => this.setState({ draft: Object.assign({}, s.draft, { project: e.target.value }) }),
+      setDraftPriority: (e) => this.setState({ draft: Object.assign({}, s.draft, { priority: e.target.value }) }),
+      setDraftWho: (e) => this.setState({ draft: Object.assign({}, s.draft, { who: e.target.value }) }),
+      setDraftDue: (e) => this.setState({ draft: Object.assign({}, s.draft, { due: e.target.value || '2026-11-20' }) }),
+      toggleDraftRecurring: () => this.setState({ draft: Object.assign({}, s.draft, { recurring: !s.draft.recurring }) }),
+      createTask: () => {
+        const d = s.draft; if (!d.title.trim()) { this.setState({ draftError: true }); return; }
+        const pk = PROJ[d.project].key;
+        const max = s.tasks.filter((t) => t.project === d.project).reduce((m, t) => Math.max(m, parseInt(t.key.split('-')[1], 10)), 0);
+        const key = pk + '-' + (max + 4);
+        const nt = { key, title: d.title.trim(), project: d.project, status: 'To do', priority: d.priority, who: d.who, due: d.due, tags: [], recurring: d.recurring ? 'Every week' : undefined };
+        this.setState({ tasks: s.tasks.concat([nt]), modal: null, screen: 'board', project: d.project, boardView: 'board', prio: 'All' });
+        this.toastMsg(key + ' created and ' + PEOPLE[d.who] + ' was notified');
+      },
+      invite: s.invite, inviteError: s.inviteError, inviteBorder: s.inviteError ? c.rose : c.bd2,
+      setInviteEmail: (e) => this.setState({ invite: Object.assign({}, s.invite, { email: e.target.value }), inviteError: false }),
+      setInviteRole: (e) => this.setState({ invite: Object.assign({}, s.invite, { role: e.target.value }) }),
+      sendInvite: () => {
+        const em = s.invite.email.trim(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { this.setState({ inviteError: true }); return; }
+        const nm = em.split('@')[0]; const ini = nm.slice(0, 2).toUpperCase();
+        this.setState({ members: s.members.concat([{ initials: ini, name: nm.charAt(0).toUpperCase() + nm.slice(1), email: em, role: s.invite.role, projects: 'None yet', status: 'Invited' }]), modal: null });
+        this.toastMsg('Invitation email sent to ' + em);
+      },
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

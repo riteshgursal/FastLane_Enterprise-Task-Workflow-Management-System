@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: flowlane
+  profiles:
+    default: dev
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:flowlane}?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+    username: ${DB_USERNAME:flowlane_app}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 26MB
+
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+
+flowlane:
+  frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  jwt:
+    secret: ${JWT_SECRET:}
+    access-ttl: ${JWT_ACCESS_TTL:PT15M}
+    refresh-ttl: ${JWT_REFRESH_TTL:P14D}
+  cookies:
+    secure: ${COOKIE_SECURE:true}
+  storage:
+    dir: ${STORAGE_DIR:./data/uploads}
+  reminders:
+    cron: ${REMINDER_CRON:0 0 8 * * *}
+  resend:
+    api-key: ${RESEND_API_KEY:}
+    from: ${RESEND_FROM:Flowlane <onboarding@resend.dev>}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    com.flowlane: INFO
